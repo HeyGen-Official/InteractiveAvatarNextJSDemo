@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+li {
+  list-style-type: square;
+  margin-left: 30px;
+  padding: 2px;
+}
