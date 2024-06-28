@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Link,
   Navbar,
@@ -10,7 +12,7 @@ import { ThemeSwitch } from "./ThemeSwitch";
 
 export default function NavBar() {
   return (
-    <Navbar>
+    <Navbar className="w-full">
       <NavbarBrand>
         <Link isExternal aria-label="HeyGen" href="https://app.heygen.com/">
           <HeyGenLogo />
@@ -22,7 +24,19 @@ export default function NavBar() {
         </div>
       </NavbarBrand>
       <NavbarContent justify="center">
-        <NavbarItem className="flex flex-row items-center gap-10">
+        <NavbarItem className="flex flex-row items-center gap-4">
+          <Link
+            color="foreground"
+            href="https://app.heygen.com/streaming-avatar"
+          >
+            Avatars
+          </Link>
+          <Link
+            color="foreground"
+            href="https://docs.heygen.com/reference/list-voices-v2"
+          >
+            Voices
+          </Link>
           <Link
             color="foreground"
             href="https://docs.heygen.com/reference/new-session-copy"
@@ -30,13 +44,19 @@ export default function NavBar() {
             API Docs
           </Link>
           <Link
+            color="foreground"
+            href="https://help.heygen.com/en/articles/9182113-streaming-avatar-101-your-ultimate-guide"
+          >
+            Guide
+          </Link>
+          <Link
             isExternal
             aria-label="Github"
             href="https://github.com/HeyGen-Official/StreamingAvatarSDK"
-            className="flex flex-row justify-center gap-2 text-foreground"
+            className="flex flex-row justify-center gap-1 text-foreground"
           >
             <GithubIcon className="text-default-500" />
-            SDK Github
+            SDK
           </Link>
           <ThemeSwitch />
         </NavbarItem>

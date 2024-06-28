@@ -1,6 +1,5 @@
 "use client";
 
-import NavBar from "@/components/NavBar";
 import StreamingAvatar from "@/components/StreamingAvatar";
 import StreamingAvatarCode from "@/components/StreamingAvatarCode";
 import { Tab, Tabs } from "@nextui-org/react";

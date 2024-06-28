@@ -13,18 +13,12 @@ import {
   Spinner,
   Tooltip,
 } from "@nextui-org/react";
+import { Microphone, MicrophoneStage } from "@phosphor-icons/react";
 import { useChat } from "ai/react";
+import clsx from "clsx";
 import OpenAI from "openai";
 import { useEffect, useRef, useState } from "react";
 import StreamingAvatarTextInput from "./StreamingAvatarTextInput";
-import {
-  Camera,
-  Microphone,
-  MicrophoneSlash,
-  MicrophoneStage,
-  Record,
-} from "@phosphor-icons/react";
-import clsx from "clsx";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -32,7 +26,9 @@ const openai = new OpenAI({
 });
 
 export default function StreamingAvatar() {
-  const [loading, setLoading] = useState(false);
+  const [isLoadingSession, setIsLoadingSession] = useState(false);
+  const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
+  const [isLoadingChat, setIsLoadingChat] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>();
   const [avatarId, setAvatarId] = useState<string>("");
@@ -45,7 +41,7 @@ export default function StreamingAvatar() {
   const avatar = useRef<StreamingAvatarApi | null>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
-  const { input, setInput, isLoading, handleSubmit } = useChat({
+  const { input, setInput, handleSubmit } = useChat({
     onFinish: async (message) => {
       console.log("ChatGPT Response:", message);
 
@@ -62,7 +58,15 @@ export default function StreamingAvatar() {
         .catch((e) => {
           setDebug(e.message);
         });
+      setIsLoadingChat(false);
     },
+    initialMessages: [
+      {
+        id: "1",
+        role: "system",
+        content: "You are a helpful assistant.",
+      },
+    ],
   });
 
   async function fetchAccessToken() {
@@ -80,7 +84,7 @@ export default function StreamingAvatar() {
   }
 
   async function start() {
-    setLoading(true);
+    setIsLoadingSession(true);
     await updateToken();
     if (!avatar.current) {
       setDebug("Avatar API is not initialized");
@@ -99,7 +103,7 @@ export default function StreamingAvatar() {
       );
       setData(res);
       setStream(avatar.current.mediaStream);
-      setLoading(false);
+      setIsLoadingSession(false);
     } catch (error) {
       console.error("Error starting avatar session:", error);
     }
@@ -136,9 +140,11 @@ export default function StreamingAvatar() {
       { stopSessionRequest: { sessionId: data?.sessionId } },
       setDebug
     );
+    setStream(undefined);
   }
 
   async function handleSpeak() {
+    setIsLoadingRepeat(true);
     if (!initialized || !avatar.current) {
       setDebug("Avatar API not initialized");
       return;
@@ -148,6 +154,7 @@ export default function StreamingAvatar() {
       .catch((e) => {
         setDebug(e.message);
       });
+    setIsLoadingRepeat(false);
   }
 
   useEffect(() => {
@@ -242,8 +249,16 @@ export default function StreamingAvatar() {
               >
                 <track kind="captions" />
               </video>
+              <Button
+                size="md"
+                onClick={stop}
+                className="bg-gradient-to-tr from-indigo-500 to-indigo-300 absolute bottom-3 right-3 text-white rounded-lg"
+                variant="shadow"
+              >
+                Stop session
+              </Button>
             </div>
-          ) : !loading ? (
+          ) : !isLoadingSession ? (
             <div className="h-full justify-center items-center flex flex-col gap-4 w-96 self-center">
               <Input
                 value={avatarId}
@@ -277,12 +292,14 @@ export default function StreamingAvatar() {
             onSubmit={handleSpeak}
             setInput={setText}
             disabled={!stream}
+            loading={isLoadingRepeat}
           />
           <StreamingAvatarTextInput
             label="Chat"
             placeholder="Chat with the avatar (uses ChatGPT)"
             input={input}
             onSubmit={() => {
+              setIsLoadingChat(true);
               if (!input) {
                 setDebug("Please enter text to send to ChatGPT");
                 return;
@@ -290,6 +307,7 @@ export default function StreamingAvatar() {
               handleSubmit();
             }}
             setInput={setInput}
+            loading={isLoadingChat}
             endContent={
               <Tooltip
                 content={!recording ? "Start recording" : "Stop recording"}
