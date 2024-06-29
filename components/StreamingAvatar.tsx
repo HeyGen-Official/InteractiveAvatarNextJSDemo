@@ -131,6 +131,16 @@ export default function StreamingAvatar() {
     setInitialized(true);
   }
 
+  async function handleInterrupt() {
+    if (!initialized || !avatar.current) {
+      setDebug('Avatar API not initialized');
+      return;
+    }
+    await avatar.current.interrupt({ interruptRequest: { sessionId: data?.sessionId } }).catch((e) => {
+      setDebug(e.message);
+    });
+  }
+
   async function endSession() {
     if (!initialized || !avatar.current) {
       setDebug("Avatar API not initialized");
@@ -249,6 +259,14 @@ export default function StreamingAvatar() {
               >
                 <track kind="captions" />
               </video>
+              <Button
+                size="md"
+                onClick={handleInterrupt}
+                className="bg-gradient-to-tr from-indigo-500 to-indigo-300 absolute bottom-20 right-3 text-white rounded-lg"
+                variant="shadow"
+              >
+                Interrupt
+              </Button>
               <Button
                 size="md"
                 onClick={endSession}
