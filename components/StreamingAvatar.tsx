@@ -83,7 +83,7 @@ export default function StreamingAvatar() {
     }
   }
 
-  async function start() {
+  async function startSession() {
     setIsLoadingSession(true);
     await updateToken();
     if (!avatar.current) {
@@ -131,7 +131,7 @@ export default function StreamingAvatar() {
     setInitialized(true);
   }
 
-  async function stop() {
+  async function endSession() {
     if (!initialized || !avatar.current) {
       setDebug("Avatar API not initialized");
       return;
@@ -169,7 +169,7 @@ export default function StreamingAvatar() {
     init();
 
     return () => {
-      stop();
+      endSession();
     };
   }, []);
 
@@ -251,11 +251,11 @@ export default function StreamingAvatar() {
               </video>
               <Button
                 size="md"
-                onClick={stop}
+                onClick={endSession}
                 className="bg-gradient-to-tr from-indigo-500 to-indigo-300 absolute bottom-3 right-3 text-white rounded-lg"
                 variant="shadow"
               >
-                Stop session
+                End session
               </Button>
             </div>
           ) : !isLoadingSession ? (
@@ -272,7 +272,7 @@ export default function StreamingAvatar() {
               />
               <Button
                 size="md"
-                onClick={start}
+                onClick={startSession}
                 className="bg-gradient-to-tr from-indigo-500 to-indigo-300 w-full text-white"
                 variant="shadow"
               >
