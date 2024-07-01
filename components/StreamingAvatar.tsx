@@ -1,3 +1,4 @@
+import { AVATARS, VOICES } from "@/app/lib/constants";
 import {
   Configuration,
   NewSessionData,
@@ -10,6 +11,8 @@ import {
   CardFooter,
   Divider,
   Input,
+  Select,
+  SelectItem,
   Spinner,
   Tooltip,
 } from "@nextui-org/react";
@@ -103,10 +106,13 @@ export default function StreamingAvatar() {
       );
       setData(res);
       setStream(avatar.current.mediaStream);
-      setIsLoadingSession(false);
     } catch (error) {
       console.error("Error starting avatar session:", error);
+      setDebug(
+        `There was an error starting the session. ${voiceId ? "This custom voice ID may not be supported." : ""}`
+      );
     }
+    setIsLoadingSession(false);
   }
 
   async function updateToken() {
@@ -133,12 +139,14 @@ export default function StreamingAvatar() {
 
   async function handleInterrupt() {
     if (!initialized || !avatar.current) {
-      setDebug('Avatar API not initialized');
+      setDebug("Avatar API not initialized");
       return;
     }
-    await avatar.current.interrupt({ interruptRequest: { sessionId: data?.sessionId } }).catch((e) => {
-      setDebug(e.message);
-    });
+    await avatar.current
+      .interrupt({ interruptRequest: { sessionId: data?.sessionId } })
+      .catch((e) => {
+        setDebug(e.message);
+      });
   }
 
   async function endSession() {
@@ -259,35 +267,76 @@ export default function StreamingAvatar() {
               >
                 <track kind="captions" />
               </video>
-              <Button
-                size="md"
-                onClick={handleInterrupt}
-                className="bg-gradient-to-tr from-indigo-500 to-indigo-300 absolute bottom-20 right-3 text-white rounded-lg"
-                variant="shadow"
-              >
-                Interrupt task
-              </Button>
-              <Button
-                size="md"
-                onClick={endSession}
-                className="bg-gradient-to-tr from-indigo-500 to-indigo-300 absolute bottom-3 right-3 text-white rounded-lg"
-                variant="shadow"
-              >
-                End session
-              </Button>
+              <div className="flex flex-col gap-2 absolute bottom-3 right-3">
+                <Button
+                  size="md"
+                  onClick={handleInterrupt}
+                  className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
+                  variant="shadow"
+                >
+                  Interrupt task
+                </Button>
+                <Button
+                  size="md"
+                  onClick={endSession}
+                  className="bg-gradient-to-tr from-indigo-500 to-indigo-300  text-white rounded-lg"
+                  variant="shadow"
+                >
+                  End session
+                </Button>
+              </div>
             </div>
           ) : !isLoadingSession ? (
-            <div className="h-full justify-center items-center flex flex-col gap-4 w-96 self-center">
-              <Input
-                value={avatarId}
-                onChange={(e) => setAvatarId(e.target.value)}
-                placeholder="Custom Avatar ID (optional)"
-              />
-              <Input
-                value={voiceId}
-                onChange={(e) => setVoiceId(e.target.value)}
-                placeholder="Custom Voice ID (optional)"
-              />
+            <div className="h-full justify-center items-center flex flex-col gap-8 w-[500px] self-center">
+              <div className="flex flex-col gap-2 w-full">
+                <p className="text-sm font-medium leading-none">
+                  Custom Avatar ID (optional)
+                </p>
+                <Input
+                  value={avatarId}
+                  onChange={(e) => setAvatarId(e.target.value)}
+                  placeholder="Enter a custom avatar ID"
+                />
+                <Select
+                  placeholder="Or select one from these example avatars"
+                  size="md"
+                  onChange={(e) => {
+                    setAvatarId(e.target.value);
+                  }}
+                >
+                  {AVATARS.map((avatar) => (
+                    <SelectItem
+                      key={avatar.avatar_id}
+                      textValue={avatar.avatar_id}
+                    >
+                      {avatar.name}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </div>
+              <div className="flex flex-col gap-2 w-full">
+                <p className="text-sm font-medium leading-none">
+                  Custom Voice ID (optional)
+                </p>
+                <Input
+                  value={voiceId}
+                  onChange={(e) => setVoiceId(e.target.value)}
+                  placeholder="Enter a custom voice ID"
+                />
+                <Select
+                  placeholder="Or select one from these example voices"
+                  size="md"
+                  onChange={(e) => {
+                    setVoiceId(e.target.value);
+                  }}
+                >
+                  {VOICES.map((voice) => (
+                    <SelectItem key={voice.voice_id} textValue={voice.voice_id}>
+                      {voice.name} | {voice.language} | {voice.gender}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </div>
               <Button
                 size="md"
                 onClick={startSession}
