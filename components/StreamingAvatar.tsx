@@ -265,7 +265,7 @@ export default function StreamingAvatar() {
                 className="bg-gradient-to-tr from-indigo-500 to-indigo-300 absolute bottom-20 right-3 text-white rounded-lg"
                 variant="shadow"
               >
-                Interrupt
+                Interrupt task
               </Button>
               <Button
                 size="md"
