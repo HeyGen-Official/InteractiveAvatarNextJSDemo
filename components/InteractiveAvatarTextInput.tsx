@@ -13,7 +13,7 @@ interface StreamingAvatarTextInputProps {
   loading?: boolean;
 }
 
-export default function StreamingAvatarTextInput({
+export default function InteractiveAvatarTextInput({
   label,
   placeholder,
   input,

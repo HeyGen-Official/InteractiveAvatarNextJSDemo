@@ -1,7 +1,7 @@
 "use client";
 
-import StreamingAvatar from "@/components/StreamingAvatar";
-import StreamingAvatarCode from "@/components/StreamingAvatarCode";
+import InteractiveAvatar from "@/components/InteractiveAvatar";
+import InteractiveAvatarCode from "@/components/InteractiveAvatarCode";
 import { Tab, Tabs } from "@nextui-org/react";
 
 export default function App() {
@@ -9,12 +9,12 @@ export default function App() {
     {
       id: "demo",
       label: "Demo",
-      content: <StreamingAvatar />,
+      content: <InteractiveAvatar />,
     },
     {
       id: "code",
       label: "Code",
-      content: <StreamingAvatarCode />,
+      content: <InteractiveAvatarCode />,
     },
   ];
 

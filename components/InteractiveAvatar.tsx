@@ -21,14 +21,14 @@ import { useChat } from "ai/react";
 import clsx from "clsx";
 import OpenAI from "openai";
 import { useEffect, useRef, useState } from "react";
-import StreamingAvatarTextInput from "./StreamingAvatarTextInput";
+import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 
-export default function StreamingAvatar() {
+export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
   const [isLoadingChat, setIsLoadingChat] = useState(false);
@@ -53,7 +53,7 @@ export default function StreamingAvatar() {
         return;
       }
 
-      //send the ChatGPT response to the Streaming Avatar
+      //send the ChatGPT response to the Interactive Avatar
       await avatar.current
         .speak({
           taskRequest: { text: message.content, sessionId: data?.sessionId },
@@ -352,7 +352,7 @@ export default function StreamingAvatar() {
         </CardBody>
         <Divider />
         <CardFooter className="flex flex-col gap-3">
-          <StreamingAvatarTextInput
+          <InteractiveAvatarTextInput
             label="Repeat"
             placeholder="Type something for the avatar to repeat"
             input={text}
@@ -361,7 +361,7 @@ export default function StreamingAvatar() {
             disabled={!stream}
             loading={isLoadingRepeat}
           />
-          <StreamingAvatarTextInput
+          <InteractiveAvatarTextInput
             label="Chat"
             placeholder="Chat with the avatar (uses ChatGPT)"
             input={input}

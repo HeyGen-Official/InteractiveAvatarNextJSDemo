@@ -19,7 +19,7 @@ export default function NavBar() {
         </Link>
         <div className="bg-gradient-to-br from-sky-300 to-indigo-500 bg-clip-text ml-4">
           <p className="text-xl font-semibold text-transparent">
-            HeyGen Streaming Avatar SDK NextJS Demo
+            HeyGen Interactive Avatar SDK NextJS Demo
           </p>
         </div>
       </NavbarBrand>
@@ -28,7 +28,7 @@ export default function NavBar() {
           <Link
             isExternal
             color="foreground"
-            href="https://app.heygen.com/streaming-avatar"
+            href="https://app.heygen.com/interactive-avatar"
           >
             Avatars
           </Link>
@@ -49,7 +49,7 @@ export default function NavBar() {
           <Link
             isExternal
             color="foreground"
-            href="https://help.heygen.com/en/articles/9182113-streaming-avatar-101-your-ultimate-guide"
+            href="https://help.heygen.com/en/articles/9182113-interactive-avatar-101-your-ultimate-guide"
           >
             Guide
           </Link>
