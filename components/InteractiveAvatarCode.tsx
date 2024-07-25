@@ -95,4 +95,5 @@ const TEXT = `
       <div className="w-full">
         <video playsInline autoPlay width={500} ref={mediaStream}/>
       </div> 
+    )
   }`;
