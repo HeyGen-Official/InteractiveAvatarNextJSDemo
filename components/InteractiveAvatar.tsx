@@ -10,6 +10,7 @@ import {
   Select,
   SelectItem,
   Spinner,
+  Chip,
 } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import { usePrevious } from 'ahooks'
@@ -227,7 +228,7 @@ export default function InteractiveAvatar() {
           )}
         </CardBody>
         <Divider />
-        <CardFooter className="flex flex-col gap-3">
+        <CardFooter className="flex flex-col gap-3 relative">
           <InteractiveAvatarTextInput
             label="Chat"
             placeholder="Type something for the avatar to respond"
@@ -237,6 +238,9 @@ export default function InteractiveAvatar() {
             disabled={!stream}
             loading={isLoadingRepeat}
           />
+          {
+            text && <Chip className='absolute right-16 top-6'>Listening</Chip>
+          }
         </CardFooter>
       </Card>
       <p className="font-mono text-right">
