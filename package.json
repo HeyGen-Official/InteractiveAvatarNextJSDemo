@@ -3,15 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "node_modules/next/dist/bin/next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.34",
-    "@heygen/streaming-avatar": "^1.0.11",
+    "@heygen/streaming-avatar": "^2.0.0-beta.1",
     "@nextui-org/button": "2.0.34",
+    "@nextui-org/chip": "^2.0.32",
     "@nextui-org/code": "2.0.29",
     "@nextui-org/input": "2.2.2",
     "@nextui-org/kbd": "2.0.30",
@@ -28,6 +29,7 @@
     "@react-aria/visually-hidden": "3.8.12",
     "@uiw/codemirror-extensions-langs": "^4.22.1",
     "@uiw/react-codemirror": "^4.22.1",
+    "ahooks": "^3.8.1",
     "ai": "^3.2.15",
     "clsx": "2.1.1",
     "framer-motion": "~11.1.1",
