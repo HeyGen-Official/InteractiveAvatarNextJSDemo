@@ -67,14 +67,6 @@ In order to use a private Avatar created under your own account in Interactive A
 
 Please note that Photo Avatars are not compatible with Interactive Avatar and cannot be used.
 
-### Which voices can I use with my Interactive Avatar?
-
-Most of HeyGen's AI Voices can be used with the Interactive Avatar API. To find the Voice IDs that you can use, please use the List Voices v2 endpoint from HeyGen: [https://docs.heygen.com/reference/list-voices-v2]
-
-Please note that for voices that support Emotions, such as Christine and Tarquin, you need to pass in the Emotion string in the Voice Setting parameter: [https://docs.heygen.com/reference/new-session-copy#voicesetting]
-
-You can also set the speed at which the Interactive Avatar speaks by passing in a Rate in the Voice Setting.
-
 ### Where can I read more about enterprise-level usage of the Interactive Avatar API?
 
 Please read our Interactive Avatar 101 article for more information on pricing and how to increase your concurrent session limit: https://help.heygen.com/en/articles/9182113-interactive-avatar-101-your-ultimate-guide

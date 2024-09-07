@@ -13,7 +13,7 @@ export async function POST() {
         headers: {
           "x-api-key": HEYGEN_API_KEY,
         },
-      }
+      },
     );
     const data = await res.json();
 
