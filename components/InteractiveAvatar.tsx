@@ -1,5 +1,9 @@
 import type { StartAvatarResponse } from "@heygen/streaming-avatar";
-import StreamingAvatar, {AvatarQuality, StreamingEvents} from "@heygen/streaming-avatar";
+
+import StreamingAvatar, {
+  AvatarQuality,
+  StreamingEvents,
+} from "@heygen/streaming-avatar";
 import {
   Button,
   Card,
@@ -11,10 +15,14 @@ import {
   SelectItem,
   Spinner,
   Chip,
+  Tabs,
+  Tab,
 } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
-import { usePrevious } from 'ahooks'
+import { useMemoizedFn, usePrevious } from "ahooks";
+
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
+
 import { AVATARS } from "@/app/lib/constants";
 
 export default function InteractiveAvatar() {
@@ -28,6 +36,8 @@ export default function InteractiveAvatar() {
   const [text, setText] = useState<string>("");
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
+  const [chatMode, setChatMode] = useState("text_mode");
+  const [isUserTalking, setIsUserTalking] = useState(false);
 
   async function fetchAccessToken() {
     try {
@@ -35,6 +45,7 @@ export default function InteractiveAvatar() {
         method: "POST",
       });
       const token = await response.text();
+
       console.log("Access Token:", token); // Log the token to verify
 
       return token;
@@ -48,6 +59,7 @@ export default function InteractiveAvatar() {
   async function startSession() {
     setIsLoadingSession(true);
     const newToken = await fetchAccessToken();
+
     avatar.current = new StreamingAvatar({
       token: newToken,
     });
@@ -61,6 +73,18 @@ export default function InteractiveAvatar() {
       console.log("Stream disconnected");
       endSession();
     });
+    avatar.current?.on(StreamingEvents.STREAM_READY, (event) => {
+      console.log(">>>>> Stream ready:", event.detail);
+      setStream(event.detail);
+    });
+    avatar.current?.on(StreamingEvents.USER_START, (event) => {
+      console.log(">>>>> User started talking:", event);
+      setIsUserTalking(true);
+    });
+    avatar.current?.on(StreamingEvents.USER_STOP, (event) => {
+      console.log(">>>>> User stopped talking:", event);
+      setIsUserTalking(false);
+    });
     try {
       const res = await avatar.current.createStartAvatar({
         quality: AvatarQuality.Low,
@@ -69,10 +93,9 @@ export default function InteractiveAvatar() {
       });
 
       setData(res);
-      avatar.current?.on(StreamingEvents.STREAM_READY, (event) => {
-        console.log('Stream ready:', event.detail);
-        setStream(event.detail);
-      });
+      // default to voice mode
+      await avatar.current?.startVoiceChat();
+      setChatMode("voice_mode");
     } catch (error) {
       console.error("Error starting avatar session:", error);
     } finally {
@@ -116,6 +139,19 @@ export default function InteractiveAvatar() {
     });
     setStream(undefined);
   }
+
+  const handleChangeChatMode = useMemoizedFn(async (v) => {
+    if (v === chatMode) {
+      return;
+    }
+    if (v === "text_mode") {
+      avatar.current?.closeVoiceChat();
+    } else {
+      await avatar.current?.startVoiceChat();
+    }
+    setChatMode(v);
+  });
+
   const previousText = usePrevious(text);
   useEffect(() => {
     if (!previousText && text) {
@@ -161,18 +197,18 @@ export default function InteractiveAvatar() {
               </video>
               <div className="flex flex-col gap-2 absolute bottom-3 right-3">
                 <Button
-                  size="md"
-                  onClick={handleInterrupt}
                   className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white rounded-lg"
+                  size="md"
                   variant="shadow"
+                  onClick={handleInterrupt}
                 >
                   Interrupt task
                 </Button>
                 <Button
-                  size="md"
-                  onClick={endSession}
                   className="bg-gradient-to-tr from-indigo-500 to-indigo-300  text-white rounded-lg"
+                  size="md"
                   variant="shadow"
+                  onClick={endSession}
                 >
                   End session
                 </Button>
@@ -185,17 +221,17 @@ export default function InteractiveAvatar() {
                   Custom Knowledge ID (optional)
                 </p>
                 <Input
+                  placeholder="Enter a custom knowledge ID"
                   value={knowledgeId}
                   onChange={(e) => setKnowledgeId(e.target.value)}
-                  placeholder="Enter a custom knowledge ID"
                 />
                 <p className="text-sm font-medium leading-none">
                   Custom Avatar ID (optional)
                 </p>
                 <Input
+                  placeholder="Enter a custom avatar ID"
                   value={avatarId}
                   onChange={(e) => setAvatarId(e.target.value)}
-                  placeholder="Enter a custom avatar ID"
                 />
                 <Select
                   placeholder="Or select one from these example avatars"
@@ -215,32 +251,57 @@ export default function InteractiveAvatar() {
                 </Select>
               </div>
               <Button
-                size="md"
-                onClick={startSession}
                 className="bg-gradient-to-tr from-indigo-500 to-indigo-300 w-full text-white"
+                size="md"
                 variant="shadow"
+                onClick={startSession}
               >
                 Start session
               </Button>
             </div>
           ) : (
-            <Spinner size="lg" color="default" />
+            <Spinner color="default" size="lg" />
           )}
         </CardBody>
         <Divider />
         <CardFooter className="flex flex-col gap-3 relative">
-          <InteractiveAvatarTextInput
-            label="Chat"
-            placeholder="Type something for the avatar to respond"
-            input={text}
-            onSubmit={handleSpeak}
-            setInput={setText}
-            disabled={!stream}
-            loading={isLoadingRepeat}
-          />
-          {
-            text && <Chip className='absolute right-16 top-6'>Listening</Chip>
-          }
+          <Tabs
+            aria-label="Options"
+            selectedKey={chatMode}
+            onSelectionChange={(v) => {
+              handleChangeChatMode(v);
+            }}
+          >
+            <Tab key="text_mode" title="Text mode" />
+            <Tab key="voice_mode" title="Voice mode" />
+          </Tabs>
+          {chatMode === "text_mode" ? (
+            <div className="w-full flex relative">
+              <InteractiveAvatarTextInput
+                disabled={!stream}
+                input={text}
+                label="Chat"
+                loading={isLoadingRepeat}
+                placeholder="Type something for the avatar to respond"
+                setInput={setText}
+                onSubmit={handleSpeak}
+              />
+              {text && (
+                <Chip className="absolute right-16 top-3">Listening</Chip>
+              )}
+            </div>
+          ) : (
+            <div className="w-full text-center">
+              <Button
+                isDisabled={!isUserTalking}
+                className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
+                size="md"
+                variant="shadow"
+              >
+                {isUserTalking ? "Listening" : "Voice chat"}
+              </Button>
+            </div>
+          )}
         </CardFooter>
       </Card>
       <p className="font-mono text-right">
