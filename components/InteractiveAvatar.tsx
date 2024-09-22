@@ -110,7 +110,7 @@ export default function InteractiveAvatar() {
       return;
     }
     await avatar.current
-      .speak({ text: text, sessionId: data?.session_id! })
+      .speak({ text: text })
       .catch((e) => {
         setDebug(e.message);
       });
@@ -123,7 +123,7 @@ export default function InteractiveAvatar() {
       return;
     }
     await avatar.current
-      .interrupt({ sessionId: data?.session_id! })
+      .interrupt()
       .catch((e) => {
         setDebug(e.message);
       });
@@ -134,9 +134,7 @@ export default function InteractiveAvatar() {
 
       return;
     }
-    await avatar.current.stopAvatar({
-      sessionId: data?.session_id!,
-    });
+    await avatar.current.stopAvatar();
     setStream(undefined);
   }
 
@@ -155,9 +153,9 @@ export default function InteractiveAvatar() {
   const previousText = usePrevious(text);
   useEffect(() => {
     if (!previousText && text) {
-      avatar.current?.startListening({ sessionId: data?.session_id! });
+      avatar.current?.startListening();
     } else if (previousText && !text) {
-      avatar?.current?.stopListening({ sessionId: data?.session_id! });
+      avatar?.current?.stopListening();
     }
   }, [text, previousText]);
 
