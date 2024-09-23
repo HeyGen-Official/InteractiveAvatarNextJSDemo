@@ -2,7 +2,7 @@ import type { StartAvatarResponse } from "@heygen/streaming-avatar";
 
 import StreamingAvatar, {
   AvatarQuality,
-  StreamingEvents,
+  StreamingEvents, TaskType,
 } from "@heygen/streaming-avatar";
 import {
   Button,
@@ -109,11 +109,10 @@ export default function InteractiveAvatar() {
 
       return;
     }
-    await avatar.current
-      .speak({ text: text })
-      .catch((e) => {
-        setDebug(e.message);
-      });
+    // speak({ text: text, task_type: TaskType.REPEAT })
+    await avatar.current.speak({ text: text }).catch((e) => {
+      setDebug(e.message);
+    });
     setIsLoadingRepeat(false);
   }
   async function handleInterrupt() {
@@ -129,12 +128,7 @@ export default function InteractiveAvatar() {
       });
   }
   async function endSession() {
-    if (!avatar.current) {
-      setDebug("Avatar API not initialized");
-
-      return;
-    }
-    await avatar.current.stopAvatar();
+    await avatar.current?.stopAvatar();
     setStream(undefined);
   }
 
