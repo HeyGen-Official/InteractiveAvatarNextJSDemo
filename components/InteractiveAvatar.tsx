@@ -2,7 +2,7 @@ import type { StartAvatarResponse } from "@heygen/streaming-avatar";
 
 import StreamingAvatar, {
   AvatarQuality,
-  StreamingEvents, TaskType,
+  StreamingEvents, TaskType, VoiceEmotion,
 } from "@heygen/streaming-avatar";
 import {
   Button,
@@ -23,7 +23,7 @@ import { useMemoizedFn, usePrevious } from "ahooks";
 
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
-import { AVATARS } from "@/app/lib/constants";
+import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
 
 export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
@@ -32,6 +32,8 @@ export default function InteractiveAvatar() {
   const [debug, setDebug] = useState<string>();
   const [knowledgeId, setKnowledgeId] = useState<string>("");
   const [avatarId, setAvatarId] = useState<string>("");
+  const [language, setLanguage] = useState<string>('en');
+
   const [data, setData] = useState<StartAvatarResponse>();
   const [text, setText] = useState<string>("");
   const mediaStream = useRef<HTMLVideoElement>(null);
@@ -90,6 +92,11 @@ export default function InteractiveAvatar() {
         quality: AvatarQuality.Low,
         avatarName: avatarId,
         knowledgeId: knowledgeId,
+        voice: {
+          rate: 1.5, // 0.5 ~ 1.5
+          emotion: VoiceEmotion.EXCITED,
+        },
+        language: language,
       });
 
       setData(res);
@@ -238,6 +245,21 @@ export default function InteractiveAvatar() {
                       textValue={avatar.avatar_id}
                     >
                       {avatar.name}
+                    </SelectItem>
+                  ))}
+                </Select>
+                <Select
+                  label="Select language"
+                  placeholder="Select language"
+                  className="max-w-xs"
+                  selectedKeys={[language]}
+                  onChange={(e) => {
+                    setLanguage(e.target.value);
+                  }}
+                >
+                  {STT_LANGUAGE_LIST.map((lang) => (
+                    <SelectItem key={lang.key}>
+                      {lang.label}
                     </SelectItem>
                   ))}
                 </Select>
