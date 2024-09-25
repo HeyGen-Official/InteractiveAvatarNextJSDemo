@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.34",
-    "@heygen/streaming-avatar": "^2.0.0-beta.1",
+    "@heygen/streaming-avatar": "^2.0.2",
     "@nextui-org/button": "2.0.34",
     "@nextui-org/chip": "^2.0.32",
     "@nextui-org/code": "2.0.29",
@@ -19,7 +19,7 @@
     "@nextui-org/link": "2.0.32",
     "@nextui-org/listbox": "2.1.21",
     "@nextui-org/navbar": "2.0.33",
-    "@nextui-org/react": "^2.4.2",
+    "@nextui-org/react": "^2.4.8",
     "@nextui-org/snippet": "2.0.38",
     "@nextui-org/switch": "2.0.31",
     "@nextui-org/system": "2.2.1",
@@ -36,7 +36,7 @@
     "intl-messageformat": "^10.5.0",
     "next": "14.2.4",
     "next-themes": "^0.2.1",
-    "openai": "^4.52.1",
+    "openai": "^4.63.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "zod": "^3.23.8"

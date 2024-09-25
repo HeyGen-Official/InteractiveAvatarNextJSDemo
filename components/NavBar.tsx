@@ -1,16 +1,20 @@
 "use client";
 
-import {
-  Link,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-} from "@nextui-org/react";
-import { GithubIcon, HeyGenLogo } from "./Icons";
-import { ThemeSwitch } from "./ThemeSwitch";
+// import {
+//   Link,
+//   Navbar,
+//   NavbarBrand,
+//   NavbarContent,
+//   NavbarItem,
+// } from "@nextui-org/react";
+// import { GithubIcon, HeyGenLogo } from "./Icons";
+// import { ThemeSwitch } from "./ThemeSwitch";
 
 export default function NavBar() {
+  return null; // Return null instead of the Navbar component
+  
+  // Commented out Navbar component
+  /*
   return (
     <Navbar className="w-full">
       <NavbarBrand>
@@ -67,4 +71,5 @@ export default function NavBar() {
       </NavbarContent>
     </Navbar>
   );
+  */
 }
