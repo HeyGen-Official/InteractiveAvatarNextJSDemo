@@ -1,10 +1,37 @@
 import type { StartAvatarResponse } from "@heygen/streaming-avatar";
+<<<<<<< HEAD
 import StreamingAvatar, { AvatarQuality, StreamingEvents } from "@heygen/streaming-avatar";
 import { Button, Card, CardBody, CardFooter, Divider, Input, Select, SelectItem, Spinner, Chip, Tabs, Tab } from "@nextui-org/react";
+=======
+
+import StreamingAvatar, {
+  AvatarQuality,
+  StreamingEvents, TaskType, VoiceEmotion,
+} from "@heygen/streaming-avatar";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
+  Input,
+  Select,
+  SelectItem,
+  Spinner,
+  Chip,
+  Tabs,
+  Tab,
+} from "@nextui-org/react";
+>>>>>>> origin/main
 import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, usePrevious } from "ahooks";
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
+<<<<<<< HEAD
 import { AVATARS } from "@/app/lib/constants";
+=======
+
+import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
+>>>>>>> origin/main
 
 export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
@@ -13,6 +40,8 @@ export default function InteractiveAvatar() {
   const [debug, setDebug] = useState<string>();
   const [knowledgeId, setKnowledgeId] = useState<string>("");
   const [avatarId, setAvatarId] = useState<string>("");
+  const [language, setLanguage] = useState<string>('en');
+
   const [data, setData] = useState<StartAvatarResponse>();
   const [text, setText] = useState<string>("");
   const mediaStream = useRef<HTMLVideoElement>(null);
@@ -69,6 +98,11 @@ export default function InteractiveAvatar() {
         quality: AvatarQuality.Low,
         avatarName: avatarId,
         knowledgeId: knowledgeId,
+        voice: {
+          rate: 1.5, // 0.5 ~ 1.5
+          emotion: VoiceEmotion.EXCITED,
+        },
+        language: language,
       });
       setData(res);
       await avatar.current?.startVoiceChat();
@@ -86,7 +120,12 @@ export default function InteractiveAvatar() {
       setDebug("Avatar API not initialized");
       return;
     }
+<<<<<<< HEAD
     await avatar.current.speak({ text: text }).catch((e: Error) => {
+=======
+    // speak({ text: text, task_type: TaskType.REPEAT })
+    await avatar.current.speak({ text: text }).catch((e) => {
+>>>>>>> origin/main
       setDebug(e.message);
     });
     setIsLoadingRepeat(false);
@@ -103,11 +142,15 @@ export default function InteractiveAvatar() {
   }
 
   async function endSession() {
+<<<<<<< HEAD
     if (!avatar.current) {
       setDebug("Avatar API not initialized");
       return;
     }
     await avatar.current.stopAvatar();
+=======
+    await avatar.current?.stopAvatar();
+>>>>>>> origin/main
     setStream(undefined);
   }
 
@@ -260,6 +303,21 @@ export default function InteractiveAvatar() {
                       textValue={avatar.avatar_id}
                     >
                       {avatar.name}
+                    </SelectItem>
+                  ))}
+                </Select>
+                <Select
+                  label="Select language"
+                  placeholder="Select language"
+                  className="max-w-xs"
+                  selectedKeys={[language]}
+                  onChange={(e) => {
+                    setLanguage(e.target.value);
+                  }}
+                >
+                  {STT_LANGUAGE_LIST.map((lang) => (
+                    <SelectItem key={lang.key}>
+                      {lang.label}
                     </SelectItem>
                   ))}
                 </Select>
