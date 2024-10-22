@@ -2,7 +2,7 @@ import type { StartAvatarResponse } from "@heygen/streaming-avatar";
 
 import StreamingAvatar, {
   AvatarQuality,
-  StreamingEvents, TaskType, VoiceEmotion,
+  StreamingEvents, TaskMode, TaskType, VoiceEmotion,
 } from "@heygen/streaming-avatar";
 import {
   Button,
@@ -117,7 +117,7 @@ export default function InteractiveAvatar() {
       return;
     }
     // speak({ text: text, task_type: TaskType.REPEAT })
-    await avatar.current.speak({ text: text }).catch((e) => {
+    await avatar.current.speak({ text: text, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC }).catch((e) => {
       setDebug(e.message);
     });
     setIsLoadingRepeat(false);
