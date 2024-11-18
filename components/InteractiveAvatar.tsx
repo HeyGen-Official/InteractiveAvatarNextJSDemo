@@ -97,11 +97,14 @@ export default function InteractiveAvatar() {
           emotion: VoiceEmotion.EXCITED,
         },
         language: language,
+        disableIdleTimeout: true,
       });
 
       setData(res);
       // default to voice mode
-      await avatar.current?.startVoiceChat();
+      await avatar.current?.startVoiceChat({
+        useSilencePrompt: false
+      });
       setChatMode("voice_mode");
     } catch (error) {
       console.error("Error starting avatar session:", error);
