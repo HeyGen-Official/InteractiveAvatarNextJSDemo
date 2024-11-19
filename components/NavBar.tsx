@@ -28,7 +28,7 @@ export default function NavBar() {
           <Link
             isExternal
             color="foreground"
-            href="https://app.heygen.com/interactive-avatar"
+            href="https://labs.heygen.com/interactive-avatar"
           >
             Avatars
           </Link>
