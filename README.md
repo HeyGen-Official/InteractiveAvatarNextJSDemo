@@ -41,24 +41,6 @@ After you see Monica appear on the screen, you can enter text into the input lab
 
 If you want to see a different Avatar or try a different voice, you can close the session and enter the IDs and then 'start' the session again. Please see below for information on where to retrieve different Avatar and voice IDs that you can use.
 
-### Connecting to OpenAI
-
-A common use case for a Interactive Avatar is to use it as the 'face' of an LLM that users can interact with. In this demo we have included functionality to showcase this by both accepting user input via voice (using OpenAI's Whisper library) and also sending that input to an OpenAI LLM model (using their Chat Completions endpoint).
-
-Both of these features of this demo require an OpenAI API Key. If you do not have a paid OpenAI account, you can learn more on their website: [https://openai.com/index/openai-api/]
-
-Without an OpenAI API Key, this functionality will not work, and the Interactive Avatar will only be able to repeat text input that you provide, and not demonstrate being the 'face' of an LLM. Regardless, this demo is meant to demonstrate what kinds of apps and experiences you can build with our Interactive Avatar SDK, so you can code your own connection to a different LLM if you so choose.
-
-To add your Open AI API Key, fill copy it to the `OPENAI_API_KEY` and `NEXT_PUBLIC_OPENAI_API_KEY` variables in the `.env` file.
-
-### How does the integration with OpenAI / ChatGPT work?
-
-In this demo, we are calling the Chat Completions API from OpenAI in order to come up with some response to user input. You can see the relevant code in components/InteractiveAvatar.tsx.
-
-In the initialMessages parameter, you can replace the content of the 'system' message with whatever 'knowledge base' or context that you would like the GPT-4o model to reply to the user's input with.
-
-You can explore this API and the different parameters and models available here: [https://platform.openai.com/docs/guides/text-generation/chat-completions-api]
-
 ### Which Avatars can I use with this project?
 
 By default, there are several Public Avatars that can be used in Interactive Avatar. (AKA Interactive Avatars.) You can find the Avatar IDs for these Public Avatars by navigating to [app.heygen.com/interactive-avatar](https://app.heygen.com/interactive-avatar) and clicking 'Select Avatar' and copying the avatar id.
