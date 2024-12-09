@@ -27,6 +27,17 @@ import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
 
 import { Configuration, OpenAIApi } from "openai";
 
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+
+import fs from 'fs';
+import path from 'path';
+
+const systemPromptPath = path.resolve(process.cwd(), 'systemPrompt.txt');
+const systemPrompt = fs.readFileSync(systemPromptPath, 'utf-8');
+
 export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
@@ -62,19 +73,17 @@ export default function InteractiveAvatar() {
   }
 
   async function fetchOpenAIResponse(userText: string) {
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
-
     try {
-      const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: userText,
+      const response = await openai.createChatCompletion({
+        model: "gpt-4",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userText }
+        ],
         max_tokens: 150,
       });
 
-      return response.data.choices[0].text;
+      return response.data.choices[0].message?.content || "";
     } catch (error) {
       console.error("Error fetching OpenAI response:", error);
     }
