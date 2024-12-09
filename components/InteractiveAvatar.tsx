@@ -25,6 +25,8 @@ import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
 
+import { Configuration, OpenAIApi } from "openai";
+
 export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
@@ -40,6 +42,7 @@ export default function InteractiveAvatar() {
   const avatar = useRef<StreamingAvatar | null>(null);
   const [chatMode, setChatMode] = useState("text_mode");
   const [isUserTalking, setIsUserTalking] = useState(false);
+  const [useAI, setUseAI] = useState(false);
 
   async function fetchAccessToken() {
     try {
@@ -53,6 +56,27 @@ export default function InteractiveAvatar() {
       return token;
     } catch (error) {
       console.error("Error fetching access token:", error);
+    }
+
+    return "";
+  }
+
+  async function fetchOpenAIResponse(userText: string) {
+    const configuration = new Configuration({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration);
+
+    try {
+      const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: userText,
+        max_tokens: 150,
+      });
+
+      return response.data.choices[0].text;
+    } catch (error) {
+      console.error("Error fetching OpenAI response:", error);
     }
 
     return "";
@@ -119,8 +143,14 @@ export default function InteractiveAvatar() {
 
       return;
     }
-    // speak({ text: text, task_type: TaskType.REPEAT })
-    await avatar.current.speak({ text: text, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC }).catch((e) => {
+
+    let textToSpeak = text;
+
+    if (useAI) {
+      textToSpeak = await fetchOpenAIResponse(text);
+    }
+
+    await avatar.current.speak({ text: textToSpeak, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC }).catch((e) => {
       setDebug(e.message);
     });
     setIsLoadingRepeat(false);
@@ -266,6 +296,14 @@ export default function InteractiveAvatar() {
                     </SelectItem>
                   ))}
                 </Select>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={useAI}
+                    onChange={(e) => setUseAI(e.target.checked)}
+                  />
+                  <label>Use AI conversation</label>
+                </div>
               </div>
               <Button
                 className="bg-gradient-to-tr from-indigo-500 to-indigo-300 w-full text-white"
