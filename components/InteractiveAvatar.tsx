@@ -55,6 +55,8 @@ export default function InteractiveAvatar() {
   const [isUserTalking, setIsUserTalking] = useState(false);
   const [useAI, setUseAI] = useState(false);
 
+  const [chatMessages, setChatMessages] = useState<{ role: string; content: string }[]>([]);
+
   async function fetchAccessToken() {
     try {
       const response = await fetch("/api/get-access-token", {
@@ -158,6 +160,12 @@ export default function InteractiveAvatar() {
     if (useAI) {
       textToSpeak = await fetchOpenAIResponse(text);
     }
+
+    setChatMessages((prevMessages) => [
+      ...prevMessages,
+      { role: "user", content: text },
+      { role: "assistant", content: textToSpeak },
+    ]);
 
     await avatar.current.speak({ text: textToSpeak, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC }).catch((e) => {
       setDebug(e.message);
@@ -366,6 +374,18 @@ export default function InteractiveAvatar() {
               </Button>
             </div>
           )}
+          <div className="w-full flex flex-col gap-2 mt-4">
+            {chatMessages.map((message, index) => (
+              <div
+                key={index}
+                className={`p-2 rounded-lg ${
+                  message.role === "user" ? "bg-blue-200 self-end" : "bg-gray-200 self-start"
+                }`}
+              >
+                {message.content}
+              </div>
+            ))}
+          </div>
         </CardFooter>
       </Card>
       <p className="font-mono text-right">
