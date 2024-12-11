@@ -39,6 +39,7 @@ export default function InteractiveAvatar({
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>();
   const [knowledgeId, setKnowledgeId] = useState<string>("");
+  // const [avatarId, setAvatarId] = useState<string>("");
   const [avatarId, setAvatarId] = useState<string>(initialAvatarId || "");
   const [language, setLanguage] = useState<string>('en');
 
@@ -46,15 +47,27 @@ export default function InteractiveAvatar({
   const [text, setText] = useState<string>("");
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
-  const [chatMode, setChatMode] = useState(autoStartVoiceMode ? "voice_mode" : "text_mode");
+  const [chatMode, setChatMode] = useState("voice_mode");
   const [isUserTalking, setIsUserTalking] = useState(false);
 
-  // Auto-start session if initialAvatarId is provided
+  // Add new state for component readiness
+  const [isReady, setIsReady] = useState(false);
+
+  // Add useEffect for component initialization
   useEffect(() => {
-    if (initialAvatarId && autoStartVoiceMode && !stream) {
-      startSession();
+    setIsReady(true);
+  }, []);
+
+  // Replace the existing auto-start useEffect with this enhanced version
+  useEffect(() => {
+    if (initialAvatarId && !stream && isReady) {
+      const timer = setTimeout(() => {
+        startSession();
+      }, 1000); // 1 second delay
+
+      return () => clearTimeout(timer);
     }
-  }, [initialAvatarId, autoStartVoiceMode]);
+  }, [initialAvatarId, stream, isReady]);
 
   async function fetchAccessToken() {
     try {
