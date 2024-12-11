@@ -25,21 +25,36 @@ import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
 
-export default function InteractiveAvatar() {
+interface InteractiveAvatarProps {
+  initialAvatarId?: string;
+  autoStartVoiceMode?: boolean;
+}
+
+export default function InteractiveAvatar({ 
+  initialAvatarId,
+  autoStartVoiceMode = false 
+}: InteractiveAvatarProps) {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
   const [isLoadingRepeat, setIsLoadingRepeat] = useState(false);
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>();
   const [knowledgeId, setKnowledgeId] = useState<string>("");
-  const [avatarId, setAvatarId] = useState<string>("");
+  const [avatarId, setAvatarId] = useState<string>(initialAvatarId || "");
   const [language, setLanguage] = useState<string>('en');
 
   const [data, setData] = useState<StartAvatarResponse>();
   const [text, setText] = useState<string>("");
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
-  const [chatMode, setChatMode] = useState("text_mode");
+  const [chatMode, setChatMode] = useState(autoStartVoiceMode ? "voice_mode" : "text_mode");
   const [isUserTalking, setIsUserTalking] = useState(false);
+
+  // Auto-start session if initialAvatarId is provided
+  useEffect(() => {
+    if (initialAvatarId && autoStartVoiceMode && !stream) {
+      startSession();
+    }
+  }, [initialAvatarId, autoStartVoiceMode]);
 
   async function fetchAccessToken() {
     try {
