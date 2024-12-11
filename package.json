@@ -1,6 +1,6 @@
 {
-  "name": "next-app-template",
-  "version": "0.0.1",
+  "name": "boozy-truth",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "node_modules/next/dist/bin/next dev",
