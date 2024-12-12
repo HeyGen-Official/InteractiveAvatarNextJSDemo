@@ -31,7 +31,7 @@ export default function InteractiveAvatar() {
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>();
   const [knowledgeId, setKnowledgeId] = useState<string>("");
-  const [avatarId, setAvatarId] = useState<string>("");
+  const [avatarId, setAvatarId] = useState<string>("Wayne_20240711");
   const [language, setLanguage] = useState<string>('en');
 
   const [data, setData] = useState<StartAvatarResponse>();
@@ -64,6 +64,8 @@ export default function InteractiveAvatar() {
 
     avatar.current = new StreamingAvatar({
       token: newToken,
+      basePath: "https://api.heygen.com",
+      userAudioWebsocketPath: "ws://localhost:3001/user-audio-input",
     });
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, (e) => {
       console.log("Avatar started talking", e);
@@ -91,12 +93,6 @@ export default function InteractiveAvatar() {
       const res = await avatar.current.createStartAvatar({
         quality: AvatarQuality.Low,
         avatarName: avatarId,
-        knowledgeId: knowledgeId, // Or use a custom `knowledgeBase`.
-        voice: {
-          rate: 1.5, // 0.5 ~ 1.5
-          emotion: VoiceEmotion.EXCITED,
-        },
-        language: language,
         disableIdleTimeout: true,
       });
 
@@ -125,6 +121,7 @@ export default function InteractiveAvatar() {
     });
     setIsLoadingRepeat(false);
   }
+  
   async function handleInterrupt() {
     if (!avatar.current) {
       setDebug("Avatar API not initialized");
