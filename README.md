@@ -23,13 +23,13 @@ Feel free to play around with the existing code and please leave any feedback fo
 
 6. Run `npm run dev`
 
-### Difference between Trial Token and Enterprise API Token
+### Using the API Key
 
-The HeyGen Trial Token is available to all users, not just Enterprise users, and allows for testing of the Interactive Avatar API, as well as other HeyGen API endpoints.
+Every HeyGen user receives 10 free API Credits when they sign up for HeyGen. You can access your HeyGen API Key at https://app.heygen.com/settings?nav=API
 
-Each Trial Token is limited to 3 concurrent interactive sessions. However, every interactive session you create with the Trial Token is free of charge, no matter how many tasks are sent to the avatar. Please note that interactive sessions will automatically close after 10 minutes of no tasks sent.
+To see the different amounts of credits that are consumed by different endpoints of the API, visit the Limits page of the API documentation: https://docs.heygen.com/reference/limits
 
-If you do not 'close' the interactive sessions and try to open more than 3, you will encounter errors including stuttering and freezing of the Interactive Avatar. Please endeavor to only have 3 sessions open at any time while you are testing the Interactive Avatar API with your Trial Token.
+To add more API credits, subscribe to one of HeyGen's API Plans. Pricing and details can be found at https://www.heygen.com/api-pricing
 
 ### Starting sessions
 
