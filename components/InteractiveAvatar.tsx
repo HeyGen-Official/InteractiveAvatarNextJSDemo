@@ -25,13 +25,6 @@ import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
 
-import { Configuration, OpenAIApi } from "openai";
-
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
 import fs from 'fs';
 import path from 'path';
 
@@ -76,16 +69,17 @@ export default function InteractiveAvatar() {
 
   async function fetchOpenAIResponse(userText: string) {
     try {
-      const response = await openai.createChatCompletion({
-        model: "gpt-4",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userText }
-        ],
-        max_tokens: 150,
+      const response = await fetch("/api/openai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userText }),
       });
 
-      return response.data.choices[0].message?.content || "";
+      const data = await response.json();
+
+      return data.content;
     } catch (error) {
       console.error("Error fetching OpenAI response:", error);
     }
