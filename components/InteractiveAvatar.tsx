@@ -25,11 +25,6 @@ import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
 
-import fs from 'fs';
-import path from 'path';
-
-const systemPromptPath = path.resolve(process.cwd(), 'systemPrompt.txt');
-const systemPrompt = fs.readFileSync(systemPromptPath, 'utf-8');
 
 export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
