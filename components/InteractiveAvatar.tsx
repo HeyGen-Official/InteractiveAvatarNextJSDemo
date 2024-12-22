@@ -1,4 +1,5 @@
 import type { StartAvatarResponse } from "@heygen/streaming-avatar";
+import { v4 as uuidv4 } from 'uuid'; // For generating unique IDs
 
 import StreamingAvatar, {
   AvatarQuality,
@@ -32,7 +33,7 @@ export default function InteractiveAvatar() {
   const [stream, setStream] = useState<MediaStream>();
   const [debug, setDebug] = useState<string>();
   const [knowledgeId, setKnowledgeId] = useState<string>("");
-  const [avatarId, setAvatarId] = useState<string>("");
+  const [avatarId, setAvatarId] = useState<string>("Ann_Therapist_public");
   const [language, setLanguage] = useState<string>('en');
 
   const [data, setData] = useState<StartAvatarResponse>();
@@ -43,7 +44,10 @@ export default function InteractiveAvatar() {
   const [isUserTalking, setIsUserTalking] = useState(false);
   const [useAI, setUseAI] = useState(false);
 
-  const [chatMessages, setChatMessages] = useState<{ role: string; content: string }[]>([]);
+  const [chatMessages, setChatMessages] = useState<{ id: string; role: string; content: string; timestamp: string }[]>([]);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  
 
   async function fetchAccessToken() {
     try {
@@ -61,6 +65,7 @@ export default function InteractiveAvatar() {
 
     return "";
   }
+
 
   async function fetchOpenAIResponse(userText: string) {
     try {
@@ -84,6 +89,8 @@ export default function InteractiveAvatar() {
 
   async function startSession() {
     setIsLoadingSession(true);
+    setAvatarId("Ann_Therapist_public");
+    
     const newToken = await fetchAccessToken();
 
     avatar.current = new StreamingAvatar({
@@ -113,12 +120,12 @@ export default function InteractiveAvatar() {
     });
     try {
       const res = await avatar.current.createStartAvatar({
-        quality: AvatarQuality.Low,
+        quality: AvatarQuality.Medium,
         avatarName: avatarId,
         knowledgeId: knowledgeId, // Or use a custom `knowledgeBase`.
         voice: {
           rate: 1.5, // 0.5 ~ 1.5
-          emotion: VoiceEmotion.EXCITED,
+          emotion: VoiceEmotion.SOOTHING,
         },
         language: language,
         disableIdleTimeout: true,
@@ -126,16 +133,26 @@ export default function InteractiveAvatar() {
 
       setData(res);
       // default to voice mode
-      await avatar.current?.startVoiceChat({
-        useSilencePrompt: false
-      });
-      setChatMode("voice_mode");
+      //await avatar.current?.startVoiceChat({
+      //  useSilencePrompt: false
+      //});
+      //setChatMode("voice_mode");
+      setChatMode("text_mode");
     } catch (error) {
       console.error("Error starting avatar session:", error);
     } finally {
       setIsLoadingSession(false);
     }
   }
+  const getTimeStamp = () => {
+    const now = new Date();
+    const hours = now.getHours() % 12 || 12;
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const ampm = now.getHours() >= 12 ? 'pm' : 'am';
+    return `${hours}:${minutes}:${seconds}${ampm}`;
+  }
+
   async function handleSpeak() {
     setIsLoadingRepeat(true);
     if (!avatar.current) {
@@ -144,17 +161,33 @@ export default function InteractiveAvatar() {
       return;
     }
 
+    let ts = getTimeStamp();
+
+    const userMessage = {
+      id: uuidv4(),
+      role: "user",
+      content: text,
+      timestamp: ts,
+    };
+
+    setChatMessages((prevMessages) => [...prevMessages, userMessage]);
+
     let textToSpeak = text;
 
     if (useAI) {
       textToSpeak = await fetchOpenAIResponse(text);
     }
 
-    setChatMessages((prevMessages) => [
-      ...prevMessages,
-      { role: "user", content: text },
-      { role: "assistant", content: textToSpeak },
-    ]);
+    ts = getTimeStamp();
+
+    const assistantMessage = {
+      id: uuidv4(),
+      role: "assistant",
+      content: textToSpeak,
+      timestamp: ts,
+    };
+
+    setChatMessages((prevMessages) => [...prevMessages, assistantMessage]);
 
     await avatar.current.speak({ text: textToSpeak, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC }).catch((e) => {
       setDebug(e.message);
@@ -199,6 +232,13 @@ export default function InteractiveAvatar() {
     }
   }, [text, previousText]);
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      // Scroll to the top (since messages are reversed)
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
+  
   useEffect(() => {
     return () => {
       endSession();
@@ -302,14 +342,6 @@ export default function InteractiveAvatar() {
                     </SelectItem>
                   ))}
                 </Select>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={useAI}
-                    onChange={(e) => setUseAI(e.target.checked)}
-                  />
-                  <label>Use AI conversation</label>
-                </div>
               </div>
               <Button
                 className="bg-gradient-to-tr from-indigo-500 to-indigo-300 w-full text-white"
@@ -325,7 +357,7 @@ export default function InteractiveAvatar() {
           )}
         </CardBody>
         <Divider />
-        <CardFooter className="flex flex-col gap-3 relative">
+        <CardFooter className="flex flex-col gap-3 relative">       
           <Tabs
             aria-label="Options"
             selectedKey={chatMode}
@@ -336,8 +368,16 @@ export default function InteractiveAvatar() {
             <Tab key="text_mode" title="Text mode" />
             <Tab key="voice_mode" title="Voice mode" />
           </Tabs>
-          {chatMode === "text_mode" ? (
-            <div className="w-full flex relative">
+          <div className="flex items-left gap-2">
+            <input
+              type="checkbox"
+              checked={useAI}
+              onChange={(e) => setUseAI(e.target.checked)}
+            />
+            <label>Use AI conversation</label>
+          </div>             
+          {chatMode === "text_mode" ? (            
+            <div className="w-full flex relative">              
               <InteractiveAvatarTextInput
                 disabled={!stream}
                 input={text}
@@ -350,8 +390,8 @@ export default function InteractiveAvatar() {
               {text && (
                 <Chip className="absolute right-16 top-3">Listening</Chip>
               )}
-            </div>
-          ) : (
+            </div>            
+          ) : (            
             <div className="w-full text-center">
               <Button
                 isDisabled={!isUserTalking}
@@ -363,16 +403,19 @@ export default function InteractiveAvatar() {
               </Button>
             </div>
           )}
-          <div className="w-full flex flex-col gap-2 mt-4">
-            {chatMessages.map((message, index) => (
-              <div
-                key={index}
-                className={`p-2 rounded-lg ${
-                  message.role === "user" ? "bg-blue-200 self-end" : "bg-gray-200 self-start"
-                }`}
-              >
-                {message.content}
-              </div>
+          <div        
+          ref={chatContainerRef}
+          className="flex flex-col-reverse gap-2 max-h-60 overflow-y-auto">          
+          {chatMessages.map((message) => (
+          <div
+            key={message.id}
+            className={`p-2 rounded-lg ${
+              message.role === "user" ? "bg-blue-200 self-end" : "bg-gray-200 self-start"
+            }`}
+            >
+            <span className="text-xs text-gray-500">{message.timestamp} - </span>
+            <span>{message.content}</span>
+          </div>           
             ))}
           </div>
         </CardFooter>
