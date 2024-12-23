@@ -1,6 +1,14 @@
 import { Input, Spinner, Tooltip } from "@nextui-org/react";
 import { Airplane, ArrowRight, PaperPlaneRight } from "@phosphor-icons/react";
 import clsx from "clsx";
+import { useEffect, useRef } from "react";
+
+interface ChatMessage {
+  id: string; // Unique identifier for each message
+  role: string;
+  content: string;
+  timestamp: string; // Timestamp for each message
+}
 
 interface StreamingAvatarTextInputProps {
   label: string;
@@ -11,7 +19,7 @@ interface StreamingAvatarTextInputProps {
   endContent?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
-  chatMessages?: { role: string; content: string }[];
+  chatMessages?: ChatMessage[];
 }
 
 export default function InteractiveAvatarTextInput({
@@ -25,6 +33,7 @@ export default function InteractiveAvatarTextInput({
   loading = false,
   chatMessages = [],
 }: StreamingAvatarTextInputProps) {
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   function handleSubmit() {
     if (input.trim() === "") {
       return;
@@ -33,17 +42,28 @@ export default function InteractiveAvatarTextInput({
     setInput("");
   }
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      // Scroll to the top (since messages are reversed)
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
+
+  
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
-        {chatMessages.map((message, index) => (
+      <div 
+      ref={chatContainerRef}
+      className="flex flex-col-reverse gap-2 max-h-60 overflow-y-auto">
+        {chatMessages.map((message) => (
           <div
-            key={index}
+            key={message.id}
             className={`p-2 rounded-lg ${
               message.role === "user" ? "bg-blue-200 self-end" : "bg-gray-200 self-start"
             }`}
           >
-            {message.content}
+            <span className="text-xs text-gray-500">{message.timestamp} - </span>
+            <span>{message.content}</span>
           </div>
         ))}
       </div>

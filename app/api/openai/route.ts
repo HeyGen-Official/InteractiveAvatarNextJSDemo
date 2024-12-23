@@ -1,4 +1,9 @@
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAI } from "openai";
+import fs from 'fs';
+import path from 'path';
+
+const systemPromptPath = path.resolve(process.cwd(), 'systemPromptGC.txt');
+const systemPrompt = fs.readFileSync(systemPromptPath, 'utf-8');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
@@ -10,21 +15,19 @@ export async function POST(request: Request) {
 
     const { userText } = await request.json();
 
-    const configuration = new Configuration({
-      apiKey: OPENAI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
 
-    const response = await openai.createChatCompletion({
-      model: "gpt-4",
+    const openai = new OpenAI();
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: process.env.OPENAI_SYSTEM_PROMPT || "" },
+        { role: "system", content: systemPrompt.toString() || process.env.OPENAI_SYSTEM_PROMPT || "" },
         { role: "user", content: userText },
       ],
       max_tokens: 150,
     });
 
-    const openaiResponse = response.data.choices[0].message?.content || "";
+    const openaiResponse = response.choices[0].message?.content || "";
 
     return new Response(JSON.stringify({ content: openaiResponse }), {
       status: 200,
