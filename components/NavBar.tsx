@@ -7,61 +7,30 @@ import {
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/react";
-import { GithubIcon, HeyGenLogo } from "./Icons";
+import { GithubIcon } from "./Icons";
 import { ThemeSwitch } from "./ThemeSwitch";
+import Image from "next/image";
 
 export default function NavBar() {
   return (
     <Navbar className="w-full">
       <NavbarBrand>
-        <Link isExternal aria-label="HeyGen" href="https://app.heygen.com/">
-          <HeyGenLogo />
+        <Link href="/" className="flex items-center gap-2">
+          <Image 
+            src="/boozytrush-logo.png" 
+            alt="Boozy Truth Logo" 
+            width={40} 
+            height={40}
+          />
+          <div className="bg-gradient-to-br from-pink-400 to-blue-400 bg-clip-text">
+            <p className="text-xl font-semibold text-transparent">
+              Boozy Truth
+            </p>
+          </div>
         </Link>
-        <div className="bg-gradient-to-br from-sky-300 to-indigo-500 bg-clip-text ml-4">
-          <p className="text-xl font-semibold text-transparent">
-            HeyGen Interactive Avatar SDK NextJS Demo
-          </p>
-        </div>
       </NavbarBrand>
-      <NavbarContent justify="center">
+      <NavbarContent justify="end">
         <NavbarItem className="flex flex-row items-center gap-4">
-          <Link
-            isExternal
-            color="foreground"
-            href="https://labs.heygen.com/interactive-avatar"
-          >
-            Avatars
-          </Link>
-          <Link
-            isExternal
-            color="foreground"
-            href="https://docs.heygen.com/reference/list-voices-v2"
-          >
-            Voices
-          </Link>
-          <Link
-            isExternal
-            color="foreground"
-            href="https://docs.heygen.com/reference/new-session-copy"
-          >
-            API Docs
-          </Link>
-          <Link
-            isExternal
-            color="foreground"
-            href="https://help.heygen.com/en/articles/9182113-interactive-avatar-101-your-ultimate-guide"
-          >
-            Guide
-          </Link>
-          <Link
-            isExternal
-            aria-label="Github"
-            href="https://github.com/HeyGen-Official/StreamingAvatarSDK"
-            className="flex flex-row justify-center gap-1 text-foreground"
-          >
-            <GithubIcon className="text-default-500" />
-            SDK
-          </Link>
           <ThemeSwitch />
         </NavbarItem>
       </NavbarContent>
