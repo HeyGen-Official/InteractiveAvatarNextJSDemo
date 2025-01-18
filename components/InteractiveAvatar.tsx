@@ -95,6 +95,12 @@ export default function InteractiveAvatar() {
         voice: {
           rate: 1.5, // 0.5 ~ 1.5
           emotion: VoiceEmotion.EXCITED,
+          // elevenlabsSettings: {
+          //   stability: 1,
+          //   similarity_boost: 1,
+          //   style: 1,
+          //   use_speaker_boost: false,
+          // },
         },
         language: language,
         disableIdleTimeout: true,
