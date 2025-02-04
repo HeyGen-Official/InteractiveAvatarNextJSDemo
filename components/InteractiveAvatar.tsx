@@ -21,7 +21,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, usePrevious } from "ahooks";
 
-import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
+// import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
 import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
 
@@ -35,11 +35,13 @@ export default function InteractiveAvatar() {
   const [language, setLanguage] = useState<string>('en');
 
   const [data, setData] = useState<StartAvatarResponse>();
+  const [userInput, setUserInput] = useState<string>("");
   const [text, setText] = useState<string>("");
   const mediaStream = useRef<HTMLVideoElement>(null);
   const avatar = useRef<StreamingAvatar | null>(null);
   const [chatMode, setChatMode] = useState("text_mode");
   const [isUserTalking, setIsUserTalking] = useState(false);
+  const [chatHistory,setChatHistory]=useState('');
 
   async function fetchAccessToken() {
     try {
@@ -110,17 +112,37 @@ export default function InteractiveAvatar() {
   }
   async function handleSpeak() {
     setIsLoadingRepeat(true);
+  
     if (!avatar.current) {
       setDebug("Avatar API not initialized");
-
       return;
     }
-    // speak({ text: text, task_type: TaskType.REPEAT })
-    await avatar.current.speak({ text: text, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC }).catch((e) => {
-      setDebug(e.message);
-    });
-    setIsLoadingRepeat(false);
+  
+    try {
+      // Fetch LLM response
+      const response = await fetch("/api/llm-response", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userInput,chatHistory }),
+      });
+      const data = await response.json();
+      setChatHistory(data.chatHistory); // Update history
+      console.log('Full LLM response:', data.response); // Log the full response
+  
+      // Make the avatar speak the response
+      await avatar.current.speak({
+        text: data,
+        taskType: TaskType.REPEAT,
+        taskMode: TaskMode.SYNC,
+      });
+    } catch (error) {
+      console.error("Error fetching LLM response:", error);
+      setDebug("Failed to fetch response from LLM");
+    } finally {
+      setIsLoadingRepeat(false);
+    }
   }
+  
   
   async function handleInterrupt() {
     if (!avatar.current) {
@@ -181,7 +203,23 @@ export default function InteractiveAvatar() {
       <Card>
         <CardBody className="h-[500px] flex flex-col justify-center items-center">
           {stream ? (
-            <div className="h-[500px] w-[900px] justify-center items-center flex rounded-lg overflow-hidden">
+            <div className="h-[500px] w-[900px] justify-center items-center flex rounded-lg overflow-hidden" style={{flexDirection:'column'}}>
+              <div className="flex flex-col items-center gap-4" style={{flexDirection:'row',marginTop:'4rem',marginBottom:'1rem'}}>
+                  {/* Input field to capture user input */}
+                  <Input
+                    placeholder="Type your message..."
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    fullWidth
+                  />
+                  {/* Button to send userInput to the LLM */}
+                  <Button
+                    onClick={handleSpeak}
+                    isDisabled={!userInput.trim() || isLoadingRepeat}
+                  >
+                    {isLoadingRepeat ? <Spinner /> : "Send to LLM"}
+                  </Button>
+                </div>
               <video
                 ref={mediaStream}
                 autoPlay
@@ -289,7 +327,7 @@ export default function InteractiveAvatar() {
             <Tab key="text_mode" title="Text mode" />
             <Tab key="voice_mode" title="Voice mode" />
           </Tabs>
-          {chatMode === "text_mode" ? (
+          {/* {chatMode === "text_mode" ? (
             <div className="w-full flex relative">
               <InteractiveAvatarTextInput
                 disabled={!stream}
@@ -315,7 +353,7 @@ export default function InteractiveAvatar() {
                 {isUserTalking ? "Listening" : "Voice chat"}
               </Button>
             </div>
-          )}
+          )} */}
         </CardFooter>
       </Card>
       <p className="font-mono text-right">

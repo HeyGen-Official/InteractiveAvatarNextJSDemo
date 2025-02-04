@@ -1,0 +1,408 @@
+{
+  "case_studies": [
+    {
+      "id": 1,
+      "title": "Marina Bay Sands: A Game-Changer in Hospitality",
+      "author": "Yale School of Management",
+      "institution": "Yale School of Management",
+      "publication_year": 2020,
+      "industry": "Hospitality, Tourism",
+      "company": "Marina Bay Sands",
+      "summary": "This case examines how Marina Bay Sands redefined the luxury hospitality and tourism industry in Singapore by integrating a casino, hotel, and entertainment hub.",
+      "key_decisions": [
+        "Investing $5.6 billion into an integrated resort despite economic uncertainties",
+        "Focusing on a unique customer experience rather than just gaming revenue",
+        "Adopting a sustainability strategy to align with Singapore’s green city initiatives"
+      ],
+      "challenges": [
+        "Regulatory restrictions on gambling and licensing in Singapore",
+        "Balancing mass tourism with exclusivity in the luxury market",
+        "High operational costs due to its large-scale infrastructure"
+      ],
+      "outcomes": [
+        "Achieved $3.2 billion in annual revenue within the first five years",
+        "Positioned Singapore as a top tourism hub in Asia",
+        "Pioneered new standards in sustainable hospitality"
+      ],
+      "decision_making_style": "Data-driven and strategic, relying on extensive market research and financial modeling",
+      "url": "https://som.yale.edu/news/2021/03/top-40-most-popular-case-studies-of-2020"
+    },
+    {
+      "id": 2,
+      "title": "Volkswagen Emissions Scandal: Engineering a Disaster",
+      "author": "Yale School of Management",
+      "institution": "Yale School of Management",
+      "publication_year": 2015,
+      "industry": "Automotive",
+      "company": "Volkswagen",
+      "summary": "This case explores the 2015 Volkswagen emissions scandal, where the company installed software to manipulate diesel engine emission results.",
+      "key_decisions": [
+        "Choosing to install defeat devices instead of investing in clean diesel technology",
+        "Handling the crisis through initial denial and later damage control",
+        "Restructuring leadership and corporate governance in response to regulatory actions"
+      ],
+      "challenges": [
+        "Regaining consumer trust after a significant ethical breach",
+        "Facing over $30 billion in fines and lawsuits",
+        "Rebuilding brand reputation in the highly competitive automotive industry"
+      ],
+      "outcomes": [
+        "Loss of CEO Martin Winterkorn and several top executives",
+        "Increased focus on electric vehicle (EV) innovation as a long-term strategy",
+        "Shift towards stricter corporate governance and compliance measures"
+      ],
+      "decision_making_style": "Short-term profit-driven decisions with inadequate ethical oversight",
+      "url": "https://som.yale.edu/news/2020/02/top-40-most-popular-case-studies-of-2019"
+    },
+    {
+      "id": 3,
+      "title": "Shake Shack IPO: Flipping the Fast-Casual Industry",
+      "author": "Yale School of Management",
+      "institution": "Yale School of Management",
+      "publication_year": 2015,
+      "industry": "Food & Beverage",
+      "company": "Shake Shack",
+      "summary": "Examines Shake Shack’s initial public offering (IPO) and its rapid growth from a single food cart to a billion-dollar restaurant chain.",
+      "key_decisions": [
+        "Positioning Shake Shack as a ‘fine casual’ dining experience rather than fast food",
+        "Choosing to grow through a public IPO instead of private equity funding",
+        "Expanding internationally while maintaining brand integrity"
+      ],
+      "challenges": [
+        "Scaling up while preserving quality and customer experience",
+        "Navigating the volatility of public market valuations",
+        "Competing with established brands like McDonald's and Five Guys"
+      ],
+      "outcomes": [
+        "Stock price surged 123% on the first day of trading",
+        "Shake Shack became a leading brand in the fast-casual segment","Expanded to over 250 locations worldwide"
+      ],
+      "decision_making_style": "Visionary and customer-centric, with a strong emphasis on brand loyalty",
+      "url": "https://som.yale.edu/news/2018/12/top-40-most-popular-case-studies-of-2018"
+    },
+    {
+      "id": 4,
+      "title": "Cadbury: Ethical Sourcing in the Chocolate Industry",
+      "author": "Yale School of Management",
+      "institution": "Yale School of Management",
+      "publication_year": 2015,
+      "industry": "Food & Beverage",
+      "company": "Cadbury",
+      "summary": "Investigates how Cadbury responded to ethical concerns regarding child labor in cocoa supply chains.",
+      "key_decisions": [
+        "Publicly acknowledging the issue rather than denying it",
+        "Investing in Fairtrade and ethical sourcing certifications",
+        "Launching consumer awareness campaigns to reinforce brand trust"
+      ],
+      "challenges": [
+        "Ensuring supply chain transparency in developing countries",
+        "Balancing cost efficiency with fair wages for farmers",
+        "Addressing reputational risks while maintaining profitability"
+      ],
+      "outcomes": [
+        "Strengthened brand image as an ethical company",
+        "Increased global demand for Fairtrade-certified chocolate",
+        "Influenced competitors to adopt similar ethical sourcing initiatives"
+      ],
+      "decision_making_style": "Corporate responsibility-driven, prioritizing long-term brand reputation over short-term profits",
+      "url": "https://som.yale.edu/news/2020/02/top-40-most-popular-case-studies-of-2019"
+    },
+    {
+      "id": 5,
+      "title": "Netflix's Disruptive Business Model",
+      "author": "Harvard Business School",
+      "institution": "Harvard Business School",
+      "publication_year": 2020,
+      "industry": "Entertainment, Technology",
+      "company": "Netflix",
+      "summary": "Analyzes how Netflix disrupted traditional media through its subscription-based streaming model and original content strategy.",
+      "key_decisions": [
+        "Shifting from DVD rentals to online streaming in 2007",
+        "Investing heavily in original content such as 'House of Cards'",
+        "Expanding globally despite regulatory and content licensing challenges"
+      ],
+      "challenges": [
+        "Navigating competition from Disney+, Amazon Prime, and HBO Max",
+        "Managing high content production costs while maintaining affordability",
+        "Addressing password-sharing and subscriber retention issues"
+      ],
+      "outcomes": [
+        "Achieved over 220 million global subscribers",
+        "Became a dominant player in the entertainment industry",
+        "Pioneered the binge-watching culture and personalized recommendations"
+      ],
+      "decision_making_style": "Innovative and risk-taking, leveraging data analytics to shape business strategy",
+      "url": "https://hbsp.harvard.edu/product/Netflix"
+    },
+    {
+      "id": 6,
+      "title": "easyJet: The Web’s Favourite Airline",
+      "author": "Nirmalya Kumar and Brian Rogers",
+      "institution": "International Institute for Management Development (IMD)",
+      "publication_year": 2000,
+      "industry": "Aviation",
+      "company": "easyJet",
+      "summary": "This case explores how easyJet revolutionized the airline industry by adopting a low-cost, no-frills model, leveraging internet bookings to reduce costs and enhance customer convenience.",
+      "key_decisions": [
+        "Implementing an online booking system to minimize distribution costs",
+        "Operating a single aircraft model to reduce maintenance and training expenses",
+        "Offering point-to-point flights to secondary airports to lower airport fees"
+      ],
+      "challenges": [
+        "Overcoming consumer skepticism towards online bookings in the early internet era",
+        "Maintaining profitability amidst rising fuel costs and market competition",
+        "Ensuring consistent service quality while rapidly expanding operations"
+      ],
+      "outcomes": [
+        "Achieved significant market share in the European low-cost airline sector",
+        "Set industry standards for cost efficiency and operational simplicity",
+        "Demonstrated the viability of internet-based sales channels in aviation"
+      ],
+      "decision_making_style": "Innovative and cost-focused, emphasizing efficiency and leveraging technology to disrupt traditional business models",
+      "url": "https://www.thecasecentre.org/50thAnniversary/top50cases/"
+    },
+    {
+      "id": 7,
+      "title": "Unilever in Brazil (1997-2007): Marketing Strategies for Low-Income Consumers",
+      "author": "Pierre Chandon and Pedro Pacheco Guimaraes",
+      "institution": "INSEAD",
+      "publication_year": 2008,
+      "industry": "Consumer Goods",
+      "company": "Unilever",
+      "summary": "This case examines Unilever's approach to capturing the low-income market in Brazil by adapting its marketing and product strategies to meet the needs of this segment.",
+      "key_decisions": [
+        "Developing affordable product lines tailored to low-income consumers",
+        "Implementing localized marketing campaigns to resonate with regional cultures",
+        "Establishing efficient distribution channels to reach remote areas"
+      ],
+      "challenges": [
+        "Understanding the unique preferences and constraints of low-income consumers",
+        "Balancing cost reductions with maintaining product quality",
+        "Competing with local brands deeply entrenched in the community"
+      ],
+      "outcomes": [
+        "Expanded market share in Brazil's low-income segment",
+        "Enhanced brand loyalty through community engagement and tailored products",
+        "Provided a framework for entering similar markets in other developing countries"
+      ],
+      "decision_making_style": "Customer-centric and adaptive, focusing on inclusivity and cultural sensitivity in marketing strategies",
+      "url": "https://www.thecasecentre.org/50thAnniversary/top50cases/"
+    },
+    {
+      "id": 8,
+      "title": "Zara: Fast Fashion",
+      "author": "Pankaj Ghemawat and José Luis Nueno",
+      "institution": "IESE Business School",
+      "publication_year": 2003,
+      "industry": "Apparel",
+      "company": "Zara",
+      "summary": "This case analyzes Zara's unique business model, which allows it to rapidly design, produce, and distribute fashion items, keeping pace with changing consumer trends.",
+      "key_decisions": [
+        "Establishing a vertically integrated supply chain to control all production stages",
+        "Implementing a quick-response system to adapt to fashion trends swiftly",
+        "Limiting production runs to create a sense of scarcity and exclusivity"
+      ],
+      "challenges": [
+        "Managing a complex logistics network to ensure timely delivery",
+        "Balancing global expansion with maintaining operational efficiency",
+        "Addressing sustainability concerns associated with fast fashion"
+      ],
+      "outcomes": [
+        "Became a global leader in the fast fashion industry",
+        "Achieved high inventory turnover rates, reducing markdowns",
+        "Set a benchmark for agility and responsiveness in retail"
+      ],
+      "decision_making_style": "Agile and trend-focused, prioritizing speed and flexibility in operations to meet consumer demands",
+      "url": "https://www.thecasecentre.org/50thAnniversary/top50cases/"
+    },
+    {
+      "id": 9,
+      "title": "Starbucks: Digital Transformation",
+      "author": "Nancy Koehn",
+      "institution": "Harvard Business School",
+      "publication_year": 2018,
+      "industry": "Food & Beverage",
+      "company": "Starbucks",
+      "summary": "This case explores how Starbucks leveraged digital technologies to enhance customer engagement, streamline operations, and drive growth.",
+      "key_decisions": [
+        "Launching the Starbucks mobile app with integrated payment and loyalty features",
+        "Implementing digital ordering and payment systems to reduce wait times",
+        "Utilizing data analytics to personalize marketing and product offerings"
+      ],
+      "challenges": [
+        "Integrating new technologies into existing operations without disrupting service",
+        "Ensuring data security and privacy for customers",
+        "Maintaining the brand's human-centric experience in a digital context"
+      ],
+      "outcomes": [
+        "Increased customer convenience and satisfaction",
+        "Boosted sales through personalized promotions and efficient service",
+        "Strengthened brand loyalty with an enhanced rewards program"
+      ],
+      "decision_making_style": "Innovative and customer-focused, embracing technology to enhance the consumer experience while preserving brand values",
+      "url": "https://www.ft.com/content/4737a206-5162-4738-a14e-75b75e31fec4"
+    },
+    {
+      "id": 10,
+      "title": "Tesla Motors: Disrupting the Auto Industry",
+      "author": "Stephen E. Weiss",
+      "institution": "INSEAD",
+      "publication_year": 2014,
+      "industry": "Automotive",
+      "company": "Tesla Motors",
+      "summary": "This case examines how Tesla Motors challenged traditional automotive industry norms with its focus on electric vehicles, innovation, and direct sales.",
+      "key_decisions": [
+        "Developing high-performance electric vehicles to change perceptions of EVs",
+        "Building a network of Supercharger stations to address range anxiety",
+        "Selling vehicles directly to consumers, bypassing traditional dealerships"
+      ],
+      "challenges": [
+        "Overcoming skepticism about the viability of electric vehicles",
+        "Managing production scale-up to meet increasing demand",
+        "Navigating regulatory hurdles and opposition from established auto dealers"
+      ],
+      "outcomes": [
+        "Established a strong brand associated with innovation and sustainability",
+        "Accelerated the adoption of electric vehicles globally",
+        "Influenced traditional automakers to invest in electric vehicle development"
+      ],
+      "decision_making_style": "Visionary and disruptive, willing to challenge industry norms to drive innovation and sustainability",
+      "url": "https://www.thecasecentre.org/50thAnniversary/top50cases/"
+    },
+    {
+      "id": 11,
+      "title": "Hertz Global Holdings (A): Uses of Debt and Equity",
+      "author": "Yale School of Management",
+      "institution": "Yale School of Management",
+      "publication_year": 2021,
+      "industry": "Automotive, Rental Services",
+      "company": "Hertz Global Holdings",
+      "summary": "This case examines Hertz's financial strategies, focusing on its capital structure decisions involving debt and equity financing.",
+      "key_decisions": [
+        "Opting for significant debt financing to fund fleet expansion",
+        "Issuing equity to manage debt levels and improve liquidity",
+        "Implementing cost-cutting measures to enhance profitability"
+      ],
+      "challenges": [
+        "Managing high leverage amidst fluctuating demand",
+        "Navigating bankruptcy proceedings during financial downturns",
+        "Rebuilding brand reputation post-bankruptcy"
+      ],
+      "outcomes": [
+        "Restructured debt to emerge from bankruptcy",
+        "Streamlined operations leading to improved financial health",
+        "Reestablished market presence with a focus on electric vehicles"
+      ],
+      "decision_making_style": "Financially strategic, balancing risk and liquidity to optimize capital structure",
+      "url": "https://som.yale.edu/story/2022/top-40-most-popular-case-studies-2021"
+    },
+    {
+      "id": 12,
+      "title": "Coffee 2016",
+      "author": "Yale School of Management",
+      "institution": "Yale School of Management",
+      "publication_year": 2016,
+      "industry": "Food & Beverage",
+      "company": "Various Coffee Producers",
+      "summary": "This case explores the global coffee industry, focusing on market dynamics, supply chain challenges, and sustainability initiatives.",
+      "key_decisions": [
+        "Adopting fair trade practices to support farmers",
+        "Investing in sustainable farming techniques",
+        "Diversifying product lines to cater to evolving consumer tastes"
+      ],
+      "challenges": [
+        "Addressing price volatility in global coffee markets",
+        "Ensuring ethical sourcing amidst complex supply chains",
+        "Competing with specialty coffee trends and changing consumer preferences"
+      ],
+      "outcomes": [
+        "Enhanced brand loyalty through ethical sourcing",
+        "Improved supply chain resilience",
+        "Increased market share in premium coffee segments"
+      ],
+      "decision_making_style": "Ethically driven, emphasizing sustainability and social responsibility",
+      "url": "https://som.yale.edu/story/2022/top-40-most-popular-case-studies-2021"
+    },
+    {
+      "id": 13,
+      "title": "Glory, Glory Man United!",
+      "author": "Yale School of Management",
+      "institution": "Yale School of Management",
+      "publication_year": 2021,
+      "industry": "Sports, Entertainment",
+      "company": "Manchester United Football Club",
+      "summary": "This case analyzes Manchester United's commercial strategies, focusing on brand management, global expansion, and revenue diversification.",
+      "key_decisions": [
+        "Expanding global fan base through international tours",
+        "Leveraging brand for lucrative sponsorship deals",
+        "Diversifying revenue streams beyond matchday income"
+      ],
+      "challenges": [
+        "Maintaining competitive performance on the field",
+        "Balancing commercial interests with fan expectations",
+        "Navigating the financial impacts of league performance"
+      ],
+      "outcomes": [
+        "Established as one of the wealthiest football clubs globally",
+        "Secured long-term sponsorships with major global brands",
+        "Expanded digital presence to engage international fans"
+      ],
+      "decision_making_style": "Brand-centric and commercially aggressive, focusing on global market penetration",
+      "url": "https://som.yale.edu/story/2022/top-40-most-popular-case-studies-2021"
+    },
+    {
+      "id": 14,
+      "title": "Zara: Fast Fashion",
+      "author": "Harvard Business School",
+      "institution": "Harvard Business School",
+      "publication_year": 2003,
+      "industry": "Retail, Fashion",
+      "company": "Zara",
+      "summary": "This case examines Zara's innovative supply chain and retail strategies that enable it to deliver the latest fashion trends rapidly.",
+      "key_decisions": [
+        "Implementing a vertically integrated supply chain",
+        "Utilizing real-time data to inform design and inventory decisions",
+        "Locating manufacturing close to headquarters to reduce lead times"
+      ],
+      "challenges": [
+        "Managing inventory across numerous global locations",
+        "Responding swiftly to changing fashion trends",
+        "Balancing cost control with rapid production cycles"
+      ],
+      "outcomes": [
+        "Achieved rapid product turnover in stores",
+        "Minimized fashion risk through limited production runs",
+        "Established a strong global presence in the fast-fashion industry"
+      ],
+      "decision_making_style": "Agile and data-driven, emphasizing speed and responsiveness in operations",
+      "url": "https://hbsp.harvard.edu/product/703497-PDF-ENG"
+    },
+    {
+      "id": 15,
+      "title": "Starbucks: Delivering Customer Service",
+      "author": "Harvard Business School",
+      "institution": "Harvard Business School",
+      "publication_year": 2006,
+      "industry": "Food & Beverage",
+      "company": "Starbucks",
+      "summary": "This case explores Starbucks' customer service strategies and the challenges it faces in maintaining customer satisfaction during rapid expansion.",
+      "key_decisions": [
+        "Investing in employee training to enhance service quality",
+        "Implementing customer feedback systems to monitor satisfaction",
+        "Adjusting store layouts to improve customer experience"
+      ],
+      "challenges": [
+        "Maintaining service consistency across numerous locations",
+        "Addressing customer concerns about service speed",
+        "Balancing efficiency with personalized customer interactions"
+      ],
+      "outcomes": [
+        "Improved customer satisfaction scores",
+        "Increased customer loyalty and repeat business",
+        "Enhanced brand reputation for quality service"
+      ],
+      "decision_making_style": "Customer-focused and quality-oriented, prioritizing service excellence",
+      "url": "https://hbsp.harvard.edu/product/504016-PDF-ENG"
+    }
+  ]
+}
