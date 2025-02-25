@@ -1,23 +1,23 @@
 export const AVATARS = [
   {
-    avatar_id: "Eric_public_pro2_20230608",
-    name: "Edward in Blue Shirt",
+    avatar_id: "Ann_Therapist_public",
+    name: "Ann Therapist",
   },
   {
-    avatar_id: "Tyler-incasualsuit-20220721",
-    name: "Tyler in Casual Suit",
+    avatar_id: "Shawn_Therapist_public",
+    name: "Shawn Therapist",
   },
   {
-    avatar_id: "Anna_public_3_20240108",
-    name: "Anna in Brown T-shirt",
+    avatar_id: "Bryan_FitnessCoach_public",
+    name: "Bryan Fitness Coach",
   },
   {
-    avatar_id: "Susan_public_2_20240328",
-    name: "Susan in Black Shirt",
+    avatar_id: "Dexter_Doctor_Standing2_public",
+    name: "Dexter Doctor Standing",
   },
   {
-    avatar_id: "josh_lite3_20230714",
-    name: "Joshua Heygen CEO",
+    avatar_id: "Elenora_IT_Sitting_public",
+    name: "Elenora Tech Expert",
   },
 ];
 
