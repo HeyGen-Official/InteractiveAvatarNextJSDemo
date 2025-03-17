@@ -2,7 +2,10 @@ import type { StartAvatarResponse } from "@heygen/streaming-avatar";
 
 import StreamingAvatar, {
   AvatarQuality,
-  StreamingEvents, TaskMode, TaskType, VoiceEmotion,
+  StreamingEvents,
+  TaskMode,
+  TaskType,
+  VoiceEmotion,
 } from "@heygen/streaming-avatar";
 import {
   Button,
@@ -23,7 +26,7 @@ import { useMemoizedFn, usePrevious } from "ahooks";
 
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
-import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
+import { AVATARS, STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
 export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
@@ -32,7 +35,7 @@ export default function InteractiveAvatar() {
   const [debug, setDebug] = useState<string>();
   const [knowledgeId, setKnowledgeId] = useState<string>("");
   const [avatarId, setAvatarId] = useState<string>("");
-  const [language, setLanguage] = useState<string>('en');
+  const [language, setLanguage] = useState<string>("en");
 
   const [data, setData] = useState<StartAvatarResponse>();
   const [text, setText] = useState<string>("");
@@ -40,6 +43,10 @@ export default function InteractiveAvatar() {
   const avatar = useRef<StreamingAvatar | null>(null);
   const [chatMode, setChatMode] = useState("text_mode");
   const [isUserTalking, setIsUserTalking] = useState(false);
+
+  function baseApiUrl() {
+    return process.env.NEXT_PUBLIC_BASE_API_URL;
+  }
 
   async function fetchAccessToken() {
     try {
@@ -64,6 +71,7 @@ export default function InteractiveAvatar() {
 
     avatar.current = new StreamingAvatar({
       token: newToken,
+      basePath: baseApiUrl(),
     });
     avatar.current.on(StreamingEvents.AVATAR_START_TALKING, (e) => {
       console.log("Avatar started talking", e);
@@ -109,7 +117,7 @@ export default function InteractiveAvatar() {
       setData(res);
       // default to voice mode
       await avatar.current?.startVoiceChat({
-        useSilencePrompt: false
+        useSilencePrompt: false,
       });
       setChatMode("voice_mode");
     } catch (error) {
@@ -126,9 +134,11 @@ export default function InteractiveAvatar() {
       return;
     }
     // speak({ text: text, task_type: TaskType.REPEAT })
-    await avatar.current.speak({ text: text, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC }).catch((e) => {
-      setDebug(e.message);
-    });
+    await avatar.current
+      .speak({ text: text, taskType: TaskType.REPEAT, taskMode: TaskMode.SYNC })
+      .catch((e) => {
+        setDebug(e.message);
+      });
     setIsLoadingRepeat(false);
   }
   async function handleInterrupt() {
@@ -137,11 +147,9 @@ export default function InteractiveAvatar() {
 
       return;
     }
-    await avatar.current
-      .interrupt()
-      .catch((e) => {
-        setDebug(e.message);
-      });
+    await avatar.current.interrupt().catch((e) => {
+      setDebug(e.message);
+    });
   }
   async function endSession() {
     await avatar.current?.stopAvatar();
@@ -267,9 +275,7 @@ export default function InteractiveAvatar() {
                   }}
                 >
                   {STT_LANGUAGE_LIST.map((lang) => (
-                    <SelectItem key={lang.key}>
-                      {lang.label}
-                    </SelectItem>
+                    <SelectItem key={lang.key}>{lang.label}</SelectItem>
                   ))}
                 </Select>
               </div>
