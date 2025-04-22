@@ -10,12 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.34",
-    "@heygen/streaming-avatar": "^2.0.10",
-    "@nextui-org/button": "2.0.34",
-    "@nextui-org/chip": "^2.0.32",
-    "@nextui-org/code": "2.0.29",
-    "@nextui-org/input": "2.2.2",
-    "@nextui-org/kbd": "2.0.30",
+    "@heygen/streaming-avatar": "^2.0.13",
     "@nextui-org/link": "2.0.32",
     "@nextui-org/listbox": "2.1.21",
     "@nextui-org/navbar": "2.0.33",
@@ -25,20 +20,19 @@
     "@nextui-org/system": "2.2.1",
     "@nextui-org/theme": "2.2.5",
     "@phosphor-icons/react": "^2.1.5",
+    "@radix-ui/react-select": "^2.1.7",
+    "@radix-ui/react-switch": "^1.1.4",
+    "@radix-ui/react-toggle-group": "^1.1.3",
     "@react-aria/ssr": "3.9.4",
     "@react-aria/visually-hidden": "3.8.12",
-    "@uiw/codemirror-extensions-langs": "^4.22.1",
-    "@uiw/react-codemirror": "^4.22.1",
     "ahooks": "^3.8.1",
     "ai": "^3.2.15",
     "clsx": "2.1.1",
-    "intl-messageformat": "^10.5.0",
-    "next": "14.2.4",
+    "next": "^15.3.0",
     "next-themes": "^0.2.1",
     "openai": "^4.52.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "zod": "^3.23.8"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/node": "20.5.7",
@@ -58,8 +52,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-unused-imports": "^3.2.0",
     "postcss": "8.4.38",
-    "tailwind-variants": "0.1.20",
-    "tailwindcss": "3.4.3",
+    "tailwindcss": "^3.4.17",
     "typescript": "5.0.4"
   }
 }
