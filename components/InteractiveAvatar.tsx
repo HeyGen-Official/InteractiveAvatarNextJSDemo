@@ -20,9 +20,11 @@ import { StreamingAvatarProvider, StreamingAvatarSessionState } from "./logic";
 import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
 
+import { AVATARS } from "@/app/lib/constants";
+
 const DEFAULT_CONFIG: StartAvatarRequest = {
   quality: AvatarQuality.Low,
-  avatarName: "Wayne_20240711_v3",
+  avatarName: AVATARS[0].avatar_id,
   knowledgeId: undefined,
   voice: {
     rate: 1.5,
@@ -151,10 +153,6 @@ function InteractiveAvatar() {
       {sessionState === StreamingAvatarSessionState.CONNECTED && (
         <MessageHistory />
       )}
-      <p className="font-mono text-right">
-        <span className="font-bold">Console:</span>
-        <br />
-      </p>
     </div>
   );
 }
