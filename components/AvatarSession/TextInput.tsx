@@ -80,7 +80,7 @@ export const TextInput: React.FC = () => {
         onSelect={setTaskMode}
       />
       <Input
-        className="shrink-0 w-[500px]"
+        className="min-w-[500px]"
         placeholder={`Type something for the avatar to ${taskType === TaskType.REPEAT ? "repeat" : "respond"}...`}
         value={message}
         onChange={setMessage}
