@@ -13,7 +13,7 @@ Feel free to play around with the existing code and please leave any feedback fo
 
 2. Navigate to the repo folder in your terminal
 
-3. Run `npm install` (assuming you have npm installed. If not, please follow these instructions: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/)
+3. Run `pnpm install` (assuming you have pnpm installed. If not, please follow these instructions: https://pnpm.io/installation)
 
 4. Enter your HeyGen Enterprise API Token in the `.env` file. Replace `HEYGEN_API_KEY` with your API key. This will allow the Client app to generate secure Access Tokens with which to create interactive sessions.
 
@@ -21,11 +21,11 @@ Feel free to play around with the existing code and please leave any feedback fo
 
 5. (Optional) If you would like to use the OpenAI features, enter your OpenAI Api Key in the `.env` file.
 
-6. Run `npm run dev`
+6. Run `pnpm dev`
 
 ### Starting sessions
 
-NOTE: Make sure you have enter your token into the `.env` file and run `npm run dev`.
+NOTE: Make sure you have enter your token into the `.env` file and run `pnpm dev`.
 
 To start your 'session' with a Interactive Avatar, first click the 'start' button. If your HeyGen API key is entered into the Server's .env file, then you should see our demo Interactive Avatar appear.
 
