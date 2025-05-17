@@ -1,5 +1,5 @@
 import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useVoiceChat } from "../logic/useVoiceChat";
 import { Button } from "../Button";
@@ -8,14 +8,24 @@ import { useInterrupt } from "../logic/useInterrupt";
 import { AudioInput } from "./AudioInput";
 import { TextInput } from "./TextInput";
 
-export const AvatarControls: React.FC = () => {
+interface AvatarControlsProps {
+  microphoneEnabled: boolean;
+}
+
+export const AvatarControls: React.FC<AvatarControlsProps> = ({ microphoneEnabled }) => {
   const {
     isVoiceChatLoading,
     isVoiceChatActive,
     startVoiceChat,
     stopVoiceChat,
+    muteInputAudio,
   } = useVoiceChat();
   const { interrupt } = useInterrupt();
+
+  // Initial mute state
+  useEffect(() => {
+    muteInputAudio();
+  }, []);
 
   return (
     <div className="flex flex-col gap-3 relative w-full items-center">
@@ -49,7 +59,7 @@ export const AvatarControls: React.FC = () => {
           Text Chat
         </ToggleGroupItem>
       </ToggleGroup>
-      {isVoiceChatActive || isVoiceChatLoading ? <AudioInput /> : <TextInput />}
+      {isVoiceChatActive || isVoiceChatLoading ? <AudioInput microphoneEnabled={microphoneEnabled} /> : <TextInput />}
       <div className="absolute top-[-70px] right-3">
         <Button className="!bg-zinc-700 !text-white" onClick={interrupt}>
           Interrupt

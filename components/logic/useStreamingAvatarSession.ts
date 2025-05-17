@@ -54,16 +54,34 @@ export const useStreamingAvatarSession = () => {
   );
 
   const stop = useCallback(async () => {
-    avatarRef.current?.off(StreamingEvents.STREAM_READY, handleStream);
-    avatarRef.current?.off(StreamingEvents.STREAM_DISCONNECTED, stop);
-    clearMessages();
-    stopVoiceChat();
-    setIsListening(false);
-    setIsUserTalking(false);
-    setIsAvatarTalking(false);
-    setStream(null);
-    await avatarRef.current?.stopAvatar();
-    setSessionState(StreamingAvatarSessionState.INACTIVE);
+    try {
+      avatarRef.current?.off(StreamingEvents.STREAM_READY, handleStream);
+      avatarRef.current?.off(StreamingEvents.STREAM_DISCONNECTED, stop);
+      clearMessages();
+      stopVoiceChat();
+      setIsListening(false);
+      setIsUserTalking(false);
+      setIsAvatarTalking(false);
+      setStream(null);
+      
+      // Gracefully stop the avatar
+      if (avatarRef.current) {
+        try {
+          await avatarRef.current.stopAvatar();
+        } catch (error: any) {
+          // Ignore specific errors that might occur during normal disconnection
+          if (!error.message?.includes('DataChannel error')) {
+            console.error('Error stopping avatar:', error);
+          }
+        }
+      }
+      
+      setSessionState(StreamingAvatarSessionState.INACTIVE);
+    } catch (error: any) {
+      console.error('Error in stop function:', error);
+      // Ensure session state is reset even if there's an error
+      setSessionState(StreamingAvatarSessionState.INACTIVE);
+    }
   }, [
     handleStream,
     setSessionState,
