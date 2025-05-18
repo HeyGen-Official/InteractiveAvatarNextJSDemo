@@ -27,8 +27,9 @@ export function applyChromaKey(
   // Check if video has valid dimensions
   if (sourceVideo.videoWidth === 0 || sourceVideo.videoHeight === 0) return;
 
-  const scaleFactor = options.scaleFactor || 0.5; // Default to 50% resolution
-  const skipPixels = options.skipPixels || 1; // Default to process every pixel
+  // Balance between performance and quality
+  const scaleFactor = options.scaleFactor || 0.4; // Default to 40% resolution
+  const skipPixels = options.skipPixels || 1; // Process every pixel for better quality
   
   const scaledWidth = Math.floor(sourceVideo.videoWidth * scaleFactor);
   const scaledHeight = Math.floor(sourceVideo.videoHeight * scaleFactor);
@@ -75,9 +76,8 @@ export function applyChromaKey(
     const g = data[i + 1];
     const b = data[i + 2];
 
-    // Faster green screen detection
-    if (g > r * options.threshold && g > b * options.threshold && g > 50) {
-      // Simple but fast transparency calculation
+    // Improved green screen detection with better threshold
+    if (g > r * 1.1 && g > b * 1.1 && g > 45) {
       data[i + 3] = 0; // Make green pixels fully transparent
     }
     
@@ -121,12 +121,13 @@ export function setupChromaKey(
   let isProcessing = true;
   let lastFrameTime = 0;
   let skipCounter = 0;
-  const targetFrameTime = 1000 / 20; // Target 20 FPS for better performance
-  const maxFrameProcessingTime = 40; // Max time in ms to process a frame
+  const targetFrameTime = 1000 / 20; // Target 20 FPS for better quality
+  const maxFrameProcessingTime = 35; // Max time in ms to process a frame
 
   // Performance monitoring
   let lastPerformanceWarning = 0;
   let processingTimes: number[] = [];
+  let consecutiveSlowFrames = 0;
 
   // Processing function
   const render = (timestamp: number) => {
@@ -144,18 +145,30 @@ export function setupChromaKey(
         : 0;
       
       const shouldSkip = frameTimeDelta < targetFrameTime || 
-                        (averageProcessingTime > maxFrameProcessingTime && skipCounter < 2);
+                        (averageProcessingTime > maxFrameProcessingTime && skipCounter < 2) ||
+                        consecutiveSlowFrames > 3;
       
       if (!shouldSkip) {
         const startTime = performance.now();
         
         // Process frame
-        applyChromaKey(sourceVideo, targetCanvas, options);
+        applyChromaKey(sourceVideo, targetCanvas, {
+          ...options,
+          scaleFactor: options.scaleFactor || 0.4,
+          skipPixels: options.skipPixels || 1
+        });
         
         // Measure and store processing time
         const processingTime = performance.now() - startTime;
         processingTimes.push(processingTime);
-        if (processingTimes.length > 10) processingTimes.shift();
+        if (processingTimes.length > 5) processingTimes.shift();
+        
+        // Track consecutive slow frames
+        if (processingTime > maxFrameProcessingTime) {
+          consecutiveSlowFrames++;
+        } else {
+          consecutiveSlowFrames = 0;
+        }
         
         // Log warning and adjust parameters if processing is consistently slow
         if (processingTime > maxFrameProcessingTime && 

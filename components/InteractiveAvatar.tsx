@@ -43,7 +43,7 @@ const DEFAULT_CONFIG: StartAvatarRequest = {
 function InteractiveAvatar() {
   const { initAvatar, startAvatar, stopAvatar, sessionState, stream } =
     useStreamingAvatarSession();
-  const { startVoiceChat, muteInputAudio } = useVoiceChat();
+  const { startVoiceChat, muteInputAudio, unmuteInputAudio } = useVoiceChat();
 
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
 
@@ -100,6 +100,8 @@ function InteractiveAvatar() {
         try {
           await streamService.updateStreamStatus(event.detail.streamId, true);
           console.log("Stream status updated to online");
+          muteInputAudio(); // Stream başladığında mikrofonu kapat
+          setMicrophoneEnabled(false); // Stream başladığında mikrofonu devre dışı bırak
         } catch (error) {
           console.error("Failed to update stream status to online:", error);
         }
@@ -231,13 +233,14 @@ function InteractiveAvatar() {
     const handleAvatarStartTalking = () => {
       setHasStartedTalking(true);
       setMicrophoneEnabled(false);
-      muteInputAudio(); // Force mute when avatar starts talking
+      muteInputAudio(); // Avatar konuşmaya başladığında mikrofonu kapat
     };
 
     const handleAvatarStopTalking = () => {
       setHasStartedTalking(false);
       if (shiftKeyPressed) {
         setMicrophoneEnabled(true);
+        unmuteInputAudio(); // Avatar konuşmayı bitirdiğinde ve shift tuşu basılıysa mikrofonu aç
       }
     };
 
@@ -248,16 +251,17 @@ function InteractiveAvatar() {
       window.removeEventListener('AVATAR_START_TALKING', handleAvatarStartTalking);
       window.removeEventListener('AVATAR_STOP_TALKING', handleAvatarStopTalking);
     };
-  }, [shiftKeyPressed, muteInputAudio]);
+  }, [shiftKeyPressed, muteInputAudio, unmuteInputAudio]);
 
   useEffect(() => {
     if (hasStartedTalking) {
       setMicrophoneEnabled(false);
-      muteInputAudio(); // Force mute when hasStartedTalking changes to true
+      muteInputAudio(); // Avatar konuşurken mikrofonu kapat
     } else if (shiftKeyPressed) {
       setMicrophoneEnabled(true);
+      unmuteInputAudio(); // Avatar konuşmayı bitirdiğinde ve shift tuşu basılıysa mikrofonu aç
     }
-  }, [hasStartedTalking, shiftKeyPressed, muteInputAudio]);
+  }, [hasStartedTalking, shiftKeyPressed, muteInputAudio, unmuteInputAudio]);
 
   return (
     <div className="w-full flex flex-col gap-4">

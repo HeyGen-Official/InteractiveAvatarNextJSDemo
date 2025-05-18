@@ -3,9 +3,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { StreamingAvatarSessionState } from "../logic";
 
-// Import global state
-declare const globalChromaKeyEnabled: boolean;
-
 interface VideoLayoutProps {
   stream: MediaStream | null;
   sessionState: StreamingAvatarSessionState;
@@ -29,19 +26,6 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [hasStartedTalking, setHasStartedTalking] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-
-  // Update video display based on global chroma key state
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.style.display = globalChromaKeyEnabled ? 'none' : 'block';
-    }
-    if (loopVideoRef.current) {
-      loopVideoRef.current.style.display = globalChromaKeyEnabled ? 'none' : 'block';
-    }
-    if (canvasRef.current) {
-      canvasRef.current.style.display = globalChromaKeyEnabled ? 'block' : 'none';
-    }
-  }, [globalChromaKeyEnabled]);
 
   useEffect(() => {
     if (videoRef.current && onVideoRef) {
@@ -83,14 +67,12 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
   useEffect(() => {
     if (sessionState === StreamingAvatarSessionState.INACTIVE) {
       setHasStartedTalking(false);
-      // Ensure loop video is visible and playing
+      // Ensure loop video is playing
       if (loopVideoRef.current) {
-        loopVideoRef.current.style.display = 'block';
         loopVideoRef.current.play();
       }
-      // Hide stream video
+      // Clear stream video
       if (videoRef.current) {
-        videoRef.current.style.display = 'none';
         videoRef.current.srcObject = null;
       }
     }
@@ -135,7 +117,7 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
         style={{
           opacity: shouldShowStream ? 0 : 1,
           visibility: shouldShowStream ? 'hidden' : 'visible',
-          display: globalChromaKeyEnabled ? 'none' : 'block'
+          display: isChromaKeyEnabled ? 'none' : 'block'
         }}
         loop
         muted
@@ -150,7 +132,7 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
         style={{
           opacity: shouldShowStream ? 1 : 0,
           visibility: shouldShowStream ? 'visible' : 'hidden',
-          display: globalChromaKeyEnabled ? 'none' : 'block'
+          display: isChromaKeyEnabled ? 'none' : 'block'
         }}
         autoPlay
         playsInline
@@ -163,7 +145,7 @@ export const VideoLayout: React.FC<VideoLayoutProps> = ({
         ref={canvasRef}
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-auto h-auto max-w-full max-h-full object-contain"
         style={{
-          display: globalChromaKeyEnabled ? 'block' : 'none'
+          display: isChromaKeyEnabled ? 'block' : 'none'
         }}
       />
 
