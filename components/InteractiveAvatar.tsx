@@ -298,7 +298,7 @@ function InteractiveAvatar() {
         </div>
       </div>
       {sessionState === StreamingAvatarSessionState.INACTIVE && (
-        <div className="rounded-xl bg-zinc-900 overflow-hidden">
+        <div className="rounded-xl bg-zinc-900 overflow-hidden hidden">
           <AvatarConfig config={config} onConfigChange={setConfig} />
         </div>
       )}

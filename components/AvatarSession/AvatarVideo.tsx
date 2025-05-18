@@ -13,17 +13,25 @@ import { setupChromaKey } from "../chromaKey";
 
 interface AvatarVideoProps {}
 
+// Global state for chroma key
+let globalChromaKeyEnabled = false;
+
 export const AvatarVideo = forwardRef<HTMLVideoElement, AvatarVideoProps>((props, ref) => {
   const { sessionState, stopAvatar, stream } = useStreamingAvatarSession();
   const { connectionQuality } = useConnectionQuality();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isChromaKeyEnabled, setIsChromaKeyEnabled] = useState(false);
+  const [isChromaKeyEnabled, setIsChromaKeyEnabled] = useState(globalChromaKeyEnabled);
   const stopChromaKeyRef = useRef<(() => void) | null>(null);
   const loopVideoRef = useRef<HTMLVideoElement>(null);
   const [hasStartedTalking, setHasStartedTalking] = useState(false);
   const [videoDimensions, setVideoDimensions] = useState({ width: 0, height: 0 });
 
   const isLoaded = sessionState === StreamingAvatarSessionState.CONNECTED;
+
+  // Update global state when local state changes
+  useEffect(() => {
+    globalChromaKeyEnabled = isChromaKeyEnabled;
+  }, [isChromaKeyEnabled]);
 
   useEffect(() => {
     const handleAvatarStartTalking = () => {
@@ -123,7 +131,9 @@ export const AvatarVideo = forwardRef<HTMLVideoElement, AvatarVideoProps>((props
   }, [isChromaKeyEnabled, hasStartedTalking, ref, videoDimensions]);
 
   const toggleChromaKey = () => {
-    setIsChromaKeyEnabled(!isChromaKeyEnabled);
+    const newValue = !isChromaKeyEnabled;
+    setIsChromaKeyEnabled(newValue);
+    globalChromaKeyEnabled = newValue;
   };
 
   return (
@@ -148,7 +158,7 @@ export const AvatarVideo = forwardRef<HTMLVideoElement, AvatarVideoProps>((props
         }}
         isChromaKeyEnabled={isChromaKeyEnabled}
       />
-      <div className="absolute bottom-4 right-4">
+      <div className="absolute bottom-4 left-4">
         <Button
           onClick={toggleChromaKey}
           className={`!bg-zinc-700 !text-white ${isChromaKeyEnabled ? "!bg-green-600" : ""}`}
