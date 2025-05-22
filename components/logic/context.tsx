@@ -2,18 +2,22 @@ import StreamingAvatar, {
   ConnectionQuality,
   StreamingTalkingMessageEvent,
   UserTalkingMessageEvent,
-} from "@heygen/streaming-avatar";
-import React, { useRef, useState } from "react";
+} from '../src';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  ExtendedMediaDeviceInfoInterface,
+  useAudioInputDevice,
+} from './useAudioInputDevice';
 
 export enum StreamingAvatarSessionState {
-  INACTIVE = "inactive",
-  CONNECTING = "connecting",
-  CONNECTED = "connected",
+  INACTIVE = 'inactive',
+  CONNECTING = 'connecting',
+  CONNECTED = 'connected',
 }
 
 export enum MessageSender {
-  CLIENT = "CLIENT",
-  AVATAR = "AVATAR",
+  CLIENT = 'CLIENT',
+  AVATAR = 'AVATAR',
 }
 
 export interface Message {
@@ -40,11 +44,7 @@ type StreamingAvatarContextProps = {
 
   messages: Message[];
   clearMessages: () => void;
-  handleUserTalkingMessage: ({
-    detail,
-  }: {
-    detail: UserTalkingMessageEvent;
-  }) => void;
+  handleUserTalkingMessage: ({ detail }: { detail: UserTalkingMessageEvent }) => void;
   handleStreamingTalkingMessage: ({
     detail,
   }: {
@@ -61,41 +61,52 @@ type StreamingAvatarContextProps = {
 
   connectionQuality: ConnectionQuality;
   setConnectionQuality: (connectionQuality: ConnectionQuality) => void;
+
+  audioInputDevices: ExtendedMediaDeviceInfoInterface[];
+  setAudioInputDevice: (audioInputDevice: ExtendedMediaDeviceInfoInterface) => void;
+  audioInputDevice: ExtendedMediaDeviceInfoInterface | undefined;
+  audioInputDeviceId: string | undefined;
+  initDevices: () => Promise<string | null>;
+  subscribeOnAudioDeviceChange: () => void;
+  unsubscribeOnAudioDeviceChange: () => void;
 };
 
-const StreamingAvatarContext = React.createContext<StreamingAvatarContextProps>(
-  {
-    avatarRef: { current: null },
-    isMuted: true,
-    setIsMuted: () => {},
-    isVoiceChatLoading: false,
-    setIsVoiceChatLoading: () => {},
-    sessionState: StreamingAvatarSessionState.INACTIVE,
-    setSessionState: () => {},
-    isVoiceChatActive: false,
-    setIsVoiceChatActive: () => {},
-    stream: null,
-    setStream: () => {},
-    messages: [],
-    clearMessages: () => {},
-    handleUserTalkingMessage: () => {},
-    handleStreamingTalkingMessage: () => {},
-    handleEndMessage: () => {},
-    isListening: false,
-    setIsListening: () => {},
-    isUserTalking: false,
-    setIsUserTalking: () => {},
-    isAvatarTalking: false,
-    setIsAvatarTalking: () => {},
-    connectionQuality: ConnectionQuality.UNKNOWN,
-    setConnectionQuality: () => {},
-  },
-);
+const StreamingAvatarContext = React.createContext<StreamingAvatarContextProps>({
+  avatarRef: { current: null },
+  isMuted: true,
+  setIsMuted: () => {},
+  isVoiceChatLoading: false,
+  setIsVoiceChatLoading: () => {},
+  sessionState: StreamingAvatarSessionState.INACTIVE,
+  setSessionState: () => {},
+  isVoiceChatActive: false,
+  setIsVoiceChatActive: () => {},
+  stream: null,
+  setStream: () => {},
+  messages: [],
+  clearMessages: () => {},
+  handleUserTalkingMessage: () => {},
+  handleStreamingTalkingMessage: () => {},
+  handleEndMessage: () => {},
+  isListening: false,
+  setIsListening: () => {},
+  isUserTalking: false,
+  setIsUserTalking: () => {},
+  isAvatarTalking: false,
+  setIsAvatarTalking: () => {},
+  connectionQuality: ConnectionQuality.UNKNOWN,
+  setConnectionQuality: () => {},
+  audioInputDevices: [],
+  setAudioInputDevice: () => {},
+  audioInputDevice: undefined,
+  audioInputDeviceId: undefined,
+  initDevices: () => Promise.resolve(null),
+  subscribeOnAudioDeviceChange: () => {},
+  unsubscribeOnAudioDeviceChange: () => {},
+});
 
 const useStreamingAvatarSessionState = () => {
-  const [sessionState, setSessionState] = useState(
-    StreamingAvatarSessionState.INACTIVE,
-  );
+  const [sessionState, setSessionState] = useState(StreamingAvatarSessionState.INACTIVE);
   const [stream, setStream] = useState<MediaStream | null>(null);
 
   return {
@@ -125,17 +136,13 @@ const useStreamingAvatarMessageState = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const currentSenderRef = useRef<MessageSender | null>(null);
 
-  const handleUserTalkingMessage = ({
-    detail,
-  }: {
-    detail: UserTalkingMessageEvent;
-  }) => {
+  const handleUserTalkingMessage = ({ detail }: { detail: UserTalkingMessageEvent }) => {
     if (currentSenderRef.current === MessageSender.CLIENT) {
       setMessages((prev) => [
         ...prev.slice(0, -1),
         {
           ...prev[prev.length - 1],
-          content: [prev[prev.length - 1].content, detail.message].join(""),
+          content: [prev[prev.length - 1].content, detail.message].join(''),
         },
       ]);
     } else {
@@ -161,7 +168,7 @@ const useStreamingAvatarMessageState = () => {
         ...prev.slice(0, -1),
         {
           ...prev[prev.length - 1],
-          content: [prev[prev.length - 1].content, detail.message].join(""),
+          content: [prev[prev.length - 1].content, detail.message].join(''),
         },
       ]);
     } else {
@@ -212,9 +219,7 @@ const useStreamingAvatarTalkingState = () => {
 };
 
 const useStreamingAvatarConnectionQualityState = () => {
-  const [connectionQuality, setConnectionQuality] = useState(
-    ConnectionQuality.UNKNOWN,
-  );
+  const [connectionQuality, setConnectionQuality] = useState(ConnectionQuality.UNKNOWN);
 
   return { connectionQuality, setConnectionQuality };
 };
@@ -233,6 +238,14 @@ export const StreamingAvatarProvider = ({
   const listeningState = useStreamingAvatarListeningState();
   const talkingState = useStreamingAvatarTalkingState();
   const connectionQualityState = useStreamingAvatarConnectionQualityState();
+  const audioInputDeviceState = useAudioInputDevice();
+
+  useEffect(() => {
+    if (!avatarRef.current || !audioInputDeviceState.audioInputDeviceId) return;
+    avatarRef.current.setVoiceChatDeviceId({
+      exact: audioInputDeviceState.audioInputDeviceId,
+    });
+  }, [audioInputDeviceState.audioInputDeviceId, avatarRef]);
 
   return (
     <StreamingAvatarContext.Provider
@@ -245,6 +258,7 @@ export const StreamingAvatarProvider = ({
         ...listeningState,
         ...talkingState,
         ...connectionQualityState,
+        ...audioInputDeviceState,
       }}
     >
       {children}

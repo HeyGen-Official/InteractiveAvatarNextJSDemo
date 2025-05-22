@@ -6,7 +6,7 @@ import {
   StartAvatarRequest,
   STTProvider,
   ElevenLabsModel,
-} from "@heygen/streaming-avatar";
+} from "./src";
 import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, useUnmount } from "ahooks";
 
@@ -24,17 +24,17 @@ import { AVATARS } from "@/app/lib/constants";
 
 const DEFAULT_CONFIG: StartAvatarRequest = {
   quality: AvatarQuality.Low,
-  avatarName: AVATARS[0].avatar_id,
+  avatarName: "Wayne_20240711_v3",
   knowledgeId: undefined,
   voice: {
     rate: 1.5,
     emotion: VoiceEmotion.EXCITED,
     model: ElevenLabsModel.eleven_flash_v2_5,
   },
-  language: "en",
-  voiceChatTransport: VoiceChatTransport.LIVEKIT,
+  language: 'en',
+  voiceChatTransport: VoiceChatTransport.WEBSOCKET,
   sttSettings: {
-    provider: STTProvider.DEEPGRAM,
+    provider: STTProvider.GLADIA,
   },
 };
 

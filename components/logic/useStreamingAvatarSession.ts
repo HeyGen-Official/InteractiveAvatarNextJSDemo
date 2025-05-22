@@ -2,7 +2,7 @@ import StreamingAvatar, {
   ConnectionQuality,
   StartAvatarRequest,
   StreamingEvents,
-} from "@heygen/streaming-avatar";
+} from "../src";
 import { useCallback } from "react";
 
 import {

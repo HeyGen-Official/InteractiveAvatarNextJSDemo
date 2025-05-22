@@ -1,0 +1,100 @@
+{
+  "options": {
+    "syntax": "proto3"
+  },
+  "nested": {
+    "pipecat": {
+      "nested": {
+        "TextFrame": {
+          "fields": {
+            "id": {
+              "type": "uint64",
+              "id": 1
+            },
+            "name": {
+              "type": "string",
+              "id": 2
+            },
+            "text": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "AudioRawFrame": {
+          "fields": {
+            "id": {
+              "type": "uint64",
+              "id": 1
+            },
+            "name": {
+              "type": "string",
+              "id": 2
+            },
+            "audio": {
+              "type": "bytes",
+              "id": 3
+            },
+            "sampleRate": {
+              "type": "uint32",
+              "id": 4
+            },
+            "numChannels": {
+              "type": "uint32",
+              "id": 5
+            }
+          }
+        },
+        "TranscriptionFrame": {
+          "fields": {
+            "id": {
+              "type": "uint64",
+              "id": 1
+            },
+            "name": {
+              "type": "string",
+              "id": 2
+            },
+            "text": {
+              "type": "string",
+              "id": 3
+            },
+            "userId": {
+              "type": "string",
+              "id": 4
+            },
+            "timestamp": {
+              "type": "string",
+              "id": 5
+            }
+          }
+        },
+        "Frame": {
+          "oneofs": {
+            "frame": {
+              "oneof": [
+                "text",
+                "audio",
+                "transcription"
+              ]
+            }
+          },
+          "fields": {
+            "text": {
+              "type": "TextFrame",
+              "id": 1
+            },
+            "audio": {
+              "type": "AudioRawFrame",
+              "id": 2
+            },
+            "transcription": {
+              "type": "TranscriptionFrame",
+              "id": 3
+            }
+          }
+        }
+      }
+    }
+  }
+}

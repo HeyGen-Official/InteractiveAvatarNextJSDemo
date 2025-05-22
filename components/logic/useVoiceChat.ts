@@ -1,6 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from 'react';
+import { useAudioInputDevice } from './useAudioInputDevice';
 
-import { useStreamingAvatarContext } from "./context";
+import { useStreamingAvatarContext } from './context';
 
 export const useVoiceChat = () => {
   const {
@@ -11,20 +12,35 @@ export const useVoiceChat = () => {
     setIsVoiceChatActive,
     isVoiceChatLoading,
     setIsVoiceChatLoading,
+    audioInputDeviceId,
+    audioInputDevices,
+    audioInputDevice,
+    setAudioInputDevice,
+    subscribeOnAudioDeviceChange,
+    unsubscribeOnAudioDeviceChange,
+    initDevices,
   } = useStreamingAvatarContext();
 
   const startVoiceChat = useCallback(
     async (isInputAudioMuted?: boolean) => {
       if (!avatarRef.current) return;
       setIsVoiceChatLoading(true);
+      const res = await initDevices();
+      console.log('res', res);
+      if (!res) {
+        setIsVoiceChatLoading(false);
+        return;
+      }
+
       await avatarRef.current?.startVoiceChat({
         isInputAudioMuted,
+        deviceId: { exact: res },
       });
       setIsVoiceChatLoading(false);
       setIsVoiceChatActive(true);
       setIsMuted(!!isInputAudioMuted);
     },
-    [avatarRef, setIsMuted, setIsVoiceChatActive, setIsVoiceChatLoading],
+    [avatarRef, setIsMuted, setIsVoiceChatActive, setIsVoiceChatLoading]
   );
 
   const stopVoiceChat = useCallback(() => {
@@ -54,5 +70,10 @@ export const useVoiceChat = () => {
     isMuted,
     isVoiceChatActive,
     isVoiceChatLoading,
+    setVoiceChatDevice: setAudioInputDevice,
+    audioInputDevices,
+    voiceChatDevice: audioInputDevice,
+    subscribeOnAudioDeviceChange,
+    unsubscribeOnAudioDeviceChange,
   };
 };
